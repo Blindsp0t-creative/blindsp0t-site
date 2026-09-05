@@ -11,15 +11,14 @@ tags:
 - realtime
 cover: images/FIELDS/c31c34f9__MG_4659_sebastien_roy.jpg
 blocks:
-- type: text
-  html: '<strong>FIELDS</strong> est un voyage audiovisuel surréaliste en 3D à la découverte de la poésie cachée de notre environnement. Le spectateur est immergé dans des paysages tantôt dramatiques, apaisants, fantastiques ou abstraits.<br><br>Ce projet est co-produit par : <br>
+- type: columns
+  columns:
+  - '<strong>FIELDS</strong> est un voyage audiovisuel surréaliste en 3D à la découverte de la poésie cachée de notre environnement. Le spectateur est immergé dans des paysages tantôt dramatiques, apaisants, fantastiques ou abstraits.<br><br>Ce projet est co-produit par : <br>
 
     * <a href="https://sat.qc.ca/">Société des arts technologiques [SAT]</a> (Montréal)<br>* <a href="https://aadn.org/">L’association AADN</a> <br>* <a href="http://www.planetariumvv.com/">Le Planétarium de Vaulx en Velin</a> (Lyon)<br><br>Et à recu le soutien de :<br>
 
-    * <a href="http://www.culture.gouv.fr/Regions/Drac-Auvergne-Rhone-Alpes">DRAC Auvergne Rhone Alpes</a><br>* <a href="https://www.auvergnerhonealpes.fr/">Region Auvergne Rhone Alpes</a><br>* <a href="https://www.cnc.fr/">Centre National du Cinema et de l’image animée</a> (CNC/ DICREAM)<br>* <a href="https://www.institutfrancais.com/fr">L’institut Francais</a><br><br>Il a notamment été diffusé lors du <a href="https://ix.sat.qc.ca/">SymposiumIX</a> (SAT), et lors de la XXe edition du <a href="http://www.mutek.org/en/montreal/2019">Mutek Festival</a> à Montréal.
-
-
-    <strong>FIELDS</strong> is an audio-visual performance for domes, an
+    * <a href="http://www.culture.gouv.fr/Regions/Drac-Auvergne-Rhone-Alpes">DRAC Auvergne Rhone Alpes</a><br>* <a href="https://www.auvergnerhonealpes.fr/">Region Auvergne Rhone Alpes</a><br>* <a href="https://www.cnc.fr/">Centre National du Cinema et de l’image animée</a> (CNC/ DICREAM)<br>* <a href="https://www.institutfrancais.com/fr">L’institut Francais</a><br><br>Il a notamment été diffusé lors du <a href="https://ix.sat.qc.ca/">SymposiumIX</a> (SAT), et lors de la XXe edition du <a href="http://www.mutek.org/en/montreal/2019">Mutek Festival</a> à Montréal.'
+  - '<strong>FIELDS</strong> is an audio-visual performance for domes, an
 
     immersive journey to discover the hidden poetry of our everyday environment.
 

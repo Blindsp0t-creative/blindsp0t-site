@@ -11,13 +11,10 @@ tags:
 - interactive
 cover: images/Decorporation-Mirage-Festival/fc78f979_Capture-decran-2019-02-01-a-16.05.27.png
 blocks:
-- type: text
-  html: 'Decorporation est une création originiale présentée en exclusivité lors du <a href="http://www.miragefestival.com/">Mirage Festival (edition 2018).</a><br><br>Interogeant notre expérience des réalités, c’est un dispositif mobile composé d’une camera stéréoscopique motorisée et d’un casque de réalité virtuelle. <br><br>Dans le casque est retransmise en temps-réel la “réalité” filmée par la camera stéréoscopique. Le visiteur est donc immergé dans la réalité qui l’entoure, mais percue d’un autre point de vue. <br><br>Cette forme de “téléportation” de ses yeux l’amène à pouvoir se contempler à la 3eme personne... et donc à vivre une expérience dite de “décorporation”<br><br>Le projet a été présenté dans le cadre de l’exposition du Reality Research Lab.
-
-
-    <br>
-
-    Decorporation is an original creation presented exclusively during the <a href="http://www.miragefestival.com/">Mirage Festival (2018).</a><br><br>Interrogating our experience of realities, it is a mobile device composed of a motorized stereoscopic camera and a virtual reality headset.<br>
+- type: columns
+  columns:
+  - Decorporation est une création originiale présentée en exclusivité lors du <a href="http://www.miragefestival.com/">Mirage Festival (edition 2018).</a><br><br>Interogeant notre expérience des réalités, c’est un dispositif mobile composé d’une camera stéréoscopique motorisée et d’un casque de réalité virtuelle. <br><br>Dans le casque est retransmise en temps-réel la “réalité” filmée par la camera stéréoscopique. Le visiteur est donc immergé dans la réalité qui l’entoure, mais percue d’un autre point de vue. <br><br>Cette forme de “téléportation” de ses yeux l’amène à pouvoir se contempler à la 3eme personne... et donc à vivre une expérience dite de “décorporation”<br><br>Le projet a été présenté dans le cadre de l’exposition du Reality Research Lab.
+  - 'Decorporation is an original creation presented exclusively during the <a href="http://www.miragefestival.com/">Mirage Festival (2018).</a><br><br>Interrogating our experience of realities, it is a mobile device composed of a motorized stereoscopic camera and a virtual reality headset.<br>
 
     <br>In the headset is transmitted in real time the "reality" filmed by the stereoscopic camera. The visitor is thus immersed in the reality that surrounds him, but perceived from another point of view. <br><br>
 

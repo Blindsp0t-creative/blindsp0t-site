@@ -206,7 +206,16 @@ def render_gallery(b, prefix):
     return f'<div class="block"><div class="{cls}">{cells}</div></div>'
 
 
-BLOCK_RENDER = {"text": render_text, "image": render_image, "video": render_video, "gallery": render_gallery}
+def render_columns(b, prefix):
+    cols = b.get("columns", [])
+    if not cols:
+        return ""
+    cells = "".join(f'<div class="col">{c}</div>' for c in cols)
+    return f'<div class="block columns">{cells}</div>'
+
+
+BLOCK_RENDER = {"text": render_text, "image": render_image, "video": render_video,
+                "gallery": render_gallery, "columns": render_columns}
 
 
 # ---------------------------------------------------------------- build
@@ -299,9 +308,17 @@ def build():
         d.mkdir(parents=True)
         (d / "index.html").write_text(page_shell(site, p["title"], body, prefix=pfx, desc=desc), encoding="utf-8")
 
-    # --- About (profondeur 1) ---
+    # --- About (profondeur 1) : titre + filet + 2 colonnes FR/EN ---
     fm, md = load_md(CONTENT / "pages" / "about.md")
-    body = f'{nav("../","about")}<main class="page"><h1 class="project-title">{esc(fm.get("title","About"))}</h1><div class="prose">{mini_markdown(md)}</div></main>'
+    parts = md.split("---EN---")
+    fr = mini_markdown(parts[0])
+    en = mini_markdown(parts[1]) if len(parts) > 1 else ""
+    if en:
+        prose = f'<div class="about-cols"><div class="col">{fr}</div><div class="col">{en}</div></div>'
+    else:
+        prose = f'<div class="prose">{fr}</div>'
+    body = (f'{nav("../","about")}<main class="page"><hr>'
+            f'<h1 class="project-title">{esc(fm.get("title","About"))}</h1>{prose}</main>')
     (OUT / "about").mkdir()
     (OUT / "about" / "index.html").write_text(
         page_shell(site, "About", body, prefix="../", active="about"), encoding="utf-8")

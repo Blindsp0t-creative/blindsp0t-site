@@ -9,16 +9,12 @@ tags:
 - festival
 cover: images/Hi-StrikerFete-des-Lumieres-Lyon-2014/ef3cfcb0_hi-striker_muriel-chaulet_dsc_5324.jpg
 blocks:
-- type: text
-  html: 'Un projet concu dans le cadre de la <a href="https://www.fetedeslumieres.lyon.fr/">Fete des Lumieres</a> de Lyon, <em>HiStriker</em> reprend un jeu ancien de fete foraine pour le transformer en une installation interactive lumineuse monumentale.<br>
+- type: columns
+  columns:
+  - 'Un projet concu dans le cadre de la <a href="https://www.fetedeslumieres.lyon.fr/">Fete des Lumieres</a> de Lyon, <em>HiStriker</em> reprend un jeu ancien de fete foraine pour le transformer en une installation interactive lumineuse monumentale.<br>
 
-    <br>Plus d''information <a href="http://www.fetedeslumieres.lyon.fr/fr/installation/hi-striker">ici</a>.<br>
-
-    <br>
-
-
-
-    <strong></strong>A project created for the <a href="https://www.fetedeslumieres.lyon.fr/">Fete des Lumieres</a> in Lyon, HiStriker takes an old fairground game and turns it into a monumental interactive light installation.<br><br>
+    <br>Plus d''information <a href="http://www.fetedeslumieres.lyon.fr/fr/installation/hi-striker">ici</a>.'
+  - '<strong></strong>A project created for the <a href="https://www.fetedeslumieres.lyon.fr/">Fete des Lumieres</a> in Lyon, HiStriker takes an old fairground game and turns it into a monumental interactive light installation.<br><br>
 
     More infos <a href="http://www.fetedeslumieres.lyon.fr/fr/installation/hi-striker">here</a>.<br>
 

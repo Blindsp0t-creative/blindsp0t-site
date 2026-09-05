@@ -123,6 +123,27 @@ def clean_text_html(node):
     return html.strip()
 
 
+def trim_br(h):
+    h = re.sub(r"^(?:<br>\s*)+", "", h)
+    return re.sub(r"(?:<br>\s*)+$", "", h).strip()
+
+
+def extract_columns(node):
+    """Si le nœud contient une grille (grid-row) avec ≥2 colonnes de texte
+    non vides (cas FR/EN côte à côte), renvoie la liste de leurs HTML."""
+    row = node if (isinstance(node, Tag) and node.get("grid-row") is not None) \
+        else (node.find(attrs={"grid-row": True}) if isinstance(node, Tag) else None)
+    if row is None:
+        return None
+    cols = row.find_all(attrs={"grid-col": True}, recursive=False)
+    htmls = []
+    for c in cols:
+        h = trim_br(clean_text_html(c))
+        if re.sub(r"<[^>]+>", "", h).strip():
+            htmls.append(h)
+    return htmls if len(htmls) >= 2 else None
+
+
 def parse_gallery(div, slug, cache):
     raw = div.get("data-gallery", "")
     settings = {}
@@ -259,9 +280,14 @@ def parse_project(slug, title, tags, order):
             if node_has_media(child):
                 walk(child, header_state)
             else:
-                html = clean_text_html(child)
-                if html:
-                    text_buf.append(html + "<br>")
+                cols = extract_columns(child)
+                if cols:
+                    flush_text()
+                    blocks.append({"type": "columns", "columns": cols})
+                else:
+                    html = clean_text_html(child)
+                    if html:
+                        text_buf.append(html + "<br>")
 
     walk(pc, {"done": False})
     flush_text()

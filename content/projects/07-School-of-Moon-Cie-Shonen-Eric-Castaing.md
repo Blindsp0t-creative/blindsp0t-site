@@ -10,11 +10,10 @@ tags:
 - live
 cover: images/School-of-Moon-Cie-Shonen-Eric-Castaing/d96e8fd1_Blindsp0t_schoolOfMoon_Manchester2.jpg
 blocks:
-- type: text
-  html: 'Collaboration avec la compagnie <a href="http://www.shonen.info/">Shonen</a>, du chorégraphe <a href="https://www.ballet-de-marseille.com/en/collaborations/associate-artist/eric-minh-cuong-castaing-65">Eric Minh Cuong Castaing</a> aux représentations de la piece School Of Moon. (Régie robotique)
-
-
-    A collaboration with the company <a href="http://www.shonen.info/">Shonen</a>, from choreographer <a href="https://www.ballet-de-marseille.com/en/collaborations/associate-artist/eric-minh-cuong-castaing-65">Eric Minh Cuong Castaing</a> to performances of School Of Moon. (Robots management)'
+- type: columns
+  columns:
+  - Collaboration avec la compagnie <a href="http://www.shonen.info/">Shonen</a>, du chorégraphe <a href="https://www.ballet-de-marseille.com/en/collaborations/associate-artist/eric-minh-cuong-castaing-65">Eric Minh Cuong Castaing</a> aux représentations de la piece School Of Moon. (Régie robotique)
+  - A collaboration with the company <a href="http://www.shonen.info/">Shonen</a>, from choreographer <a href="https://www.ballet-de-marseille.com/en/collaborations/associate-artist/eric-minh-cuong-castaing-65">Eric Minh Cuong Castaing</a> to performances of School Of Moon. (Robots management)
 - type: video
   src: https://player.vimeo.com/video/150567383
   w: '960'

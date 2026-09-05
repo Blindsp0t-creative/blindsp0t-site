@@ -5,21 +5,12 @@ order: 22
 tags: []
 cover: images/Riddim-Collision-n-17/2e15641e_riddim5.jpg
 blocks:
-- type: text
-  html: 'Une scénographie LED inédite a été mise en place au <a href="www.transbordeur.fr">transbordeur </a> à l''occasion de la 17eme édition du festival <a href="http://www.afx-booking.eu/riddim-collision/">Riddim Collision</a>, organisé par <a href="http://www.afx-booking.eu/fr/">AFX</a>.<br>
+- type: columns
+  columns:
+  - 'Une scénographie LED inédite a été mise en place au <a href="www.transbordeur.fr">transbordeur </a> à l''occasion de la 17eme édition du festival <a href="http://www.afx-booking.eu/riddim-collision/">Riddim Collision</a>, organisé par <a href="http://www.afx-booking.eu/fr/">AFX</a>.<br>
 
-    <br>Un dome géodésique et 12 écrans LEDs homemade ont été installés dans l''espace Club.<strong></strong>
-
-
-
-
-
-
-
-
-
-
-    A new LED scenography was set up at <a href="http://www.transbordeur.fr">le transbordeur</a> for the 17th edition of the <a href="http://www.afx-booking.eu/riddim-collision/">Riddim Collision festival</a>, organized by AFX.<br>
+    <br>Un dome géodésique et 12 écrans LEDs homemade ont été installés dans l''espace Club.<strong></strong>'
+  - 'A new LED scenography was set up at <a href="http://www.transbordeur.fr">le transbordeur</a> for the 17th edition of the <a href="http://www.afx-booking.eu/riddim-collision/">Riddim Collision festival</a>, organized by AFX.<br>
 
     <br>
 

@@ -7,17 +7,16 @@ tags:
 - transbordeur
 cover: images/Scenographie-Carl-Craig-Marcell-Dettman-We-Are-Reality/1df39725_weAreReal2.png
 blocks:
-- type: text
-  html: 'Scénographie LED inédite, à l''occasion de la premiere soirée "We Are Reality" au <a href="http://www.transbordeur.fr">Transbordeur</a>.<br>
+- type: columns
+  columns:
+  - 'Scénographie LED inédite, à l''occasion de la premiere soirée "We Are Reality" au <a href="http://www.transbordeur.fr">Transbordeur</a>.<br>
 
     <br>64 panneaux LEDs / 25K leds RGB / 150 univers DMX<br>
 
     <br>Une très belle collaboration BlindSpot / Benjamin Petit à la conception, fabrication et programmation et Idriss BK en encodage et restitution lumière.<br>
 
-    <br>Merci au Transbordeur pour sa confiance!
-
-
-    LED scenography, for the first "We Are Reality" evening at <a href="http://www.transbordeur.fr">the Transbordeur</a>.<br>
+    <br>Merci au Transbordeur pour sa confiance!'
+  - 'LED scenography, for the first "We Are Reality" evening at <a href="http://www.transbordeur.fr">the Transbordeur</a>.<br>
 
     <br>64 LED panels / 25K RGB LEDs / 150 DMX universes<br>
 

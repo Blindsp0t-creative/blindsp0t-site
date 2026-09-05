@@ -9,20 +9,10 @@ tags:
 - mapping
 cover: images/Hypermetrop-Fete-des-Lumieres-Lyon-2012/5b3132f5_hypermetropNEW.png
 blocks:
-- type: text
-  html: 'Présenté lors de la Fête des Lumières de Lyon en 2012, HyperMetrop est une création ambitieuse, mixant art numérique, mapping vidéo monumental et danse Hip Hop.<strong></strong>
-
-     
-
-
-
-
-
-
-
-
-
-    Presented at the Festival of Lights in Lyon in 2012, HyperMetrop is an ambitious creation, mixing digital art, monumental video mapping and hip hop dance.'
+- type: columns
+  columns:
+  - Présenté lors de la Fête des Lumières de Lyon en 2012, HyperMetrop est une création ambitieuse, mixant art numérique, mapping vidéo monumental et danse Hip Hop.<strong></strong>
+  - Presented at the Festival of Lights in Lyon in 2012, HyperMetrop is an ambitious creation, mixing digital art, monumental video mapping and hip hop dance.
 - type: video
   src: https://player.vimeo.com/video/58142388
   w: '960'

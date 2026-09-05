@@ -9,18 +9,14 @@ tags:
 - mirage festival
 cover: images/Scenographie-Mirage-Festival/94b1f97a_prt_286x286_1490773303.png
 blocks:
-- type: text
-  html: 'L''installation DELete a été mise en place à l''occasion du <a href="http://www.miragefestival.com">Mirage Festival</a> (Mars 2017) au <a href="http://www.transbordeur.fr">Transbordeur</a>. <br><br>
+- type: columns
+  columns:
+  - 'L''installation DELete a été mise en place à l''occasion du <a href="http://www.miragefestival.com">Mirage Festival</a> (Mars 2017) au <a href="http://www.transbordeur.fr">Transbordeur</a>. <br><br>
 
     Les panneaux ont été concus et créés par Blindsp0t (Antoine Vanel) & Benjamin Petit, ainsi que le développement du logiciel de pilotage (video & interfacage GranMa2).<br><br>A la console : Idriss Benkheira
 
-    <br>Un grand merci à Stephan Rocher pour son soutien et sa confiance. <br><br>Report vidéo réalisé par <a href="https://vimeo.com/user51797366">Øv Crea</a>
-
-    <br>
-
-
-
-    The DELete installation was set up during the <a href="http://www.miragefestival.com">Mirage Festival</a> (March 2017) at the <a href="http://www.transbordeur.fr">Transborder</a>. <br><br>
+    <br>Un grand merci à Stephan Rocher pour son soutien et sa confiance. <br><br>Report vidéo réalisé par <a href="https://vimeo.com/user51797366">Øv Crea</a>'
+  - 'The DELete installation was set up during the <a href="http://www.miragefestival.com">Mirage Festival</a> (March 2017) at the <a href="http://www.transbordeur.fr">Transborder</a>. <br><br>
 
     The LED panels were designed and created by Blindsp0t (Antoine Vanel) & Benjamin Petit, as well as the development of the control software (video & GranMa2 interfacing).<br><br>At the console : Idriss Benkheira<br>
 

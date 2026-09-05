@@ -7,8 +7,9 @@ tags:
 - Multi-display installation
 cover: images/Girl-Friend-Experience/27e397bf_GFE_20241107-P1211482Dark-Euphoria_Celine-Delatte-1-1920x1081.jpg
 blocks:
-- type: text
-  html: 'Réalisateur | Ugo Arsac<br>
+- type: columns
+  columns:
+  - 'Réalisateur | Ugo Arsac<br>
 
     <br>
 
@@ -38,14 +39,8 @@ blocks:
 
     Coproduction<br>
 
-    avec Chroniques, Biennale des Imaginaires Numériques dans le cadre de la plateforme CHRONIQUES CRÉATIONS, soutenue par la DRAC Provence-Alpes-Côte d’Azur, la Région Sud Provence-Alpes-Côte d’Azur et la Ville de Marseille.
-
-    <br>
-
-
-    <br>
-
-    Director | Ugo Arsac<br>
+    avec Chroniques, Biennale des Imaginaires Numériques dans le cadre de la plateforme CHRONIQUES CRÉATIONS, soutenue par la DRAC Provence-Alpes-Côte d’Azur, la Région Sud Provence-Alpes-Côte d’Azur et la Ville de Marseille.'
+  - 'Director | Ugo Arsac<br>
 
     <br>
 
@@ -75,7 +70,7 @@ blocks:
 
     Co-production<br>
 
-    with Chroniques, Biennale des Imaginaires Numériques as part of the CHRONIQUES CRÉATIONS platform, supported by DRAC Provence-Alpes-Côte d''Azur, the Sud Provence-Alpes-Côte d''Azur Region, and the City of Marseille.<br><br><br>.'
+    with Chroniques, Biennale des Imaginaires Numériques as part of the CHRONIQUES CRÉATIONS platform, supported by DRAC Provence-Alpes-Côte d''Azur, the Sud Provence-Alpes-Côte d''Azur Region, and the City of Marseille.'
 - type: gallery
   layout: slideshow
   autoplay: true

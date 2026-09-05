@@ -10,15 +10,14 @@ tags:
 - interactive
 cover: images/Intel-5G-tunnel-CES-2018/1285a531_5G_Tunnel_blindsp0t.jpg
 blocks:
-- type: text
-  html: 'Projet réalisé pour le compte de l’agence <a href="http://www.toolofna.com/">Tool of NA,</a> et sous la direction artistique de <a href="http://aramique.com/">Aramique Krauthamer</a> : <br>
+- type: columns
+  columns:
+  - 'Projet réalisé pour le compte de l’agence <a href="http://www.toolofna.com/">Tool of NA,</a> et sous la direction artistique de <a href="http://aramique.com/">Aramique Krauthamer</a> : <br>
 
     <br>Tunnel immersif & interactif formé de parois LED transparentes.<br><br>
 
-    Stand Intel présenté au CES 2018 (Las Vegas).
-
-
-    Project carried out on behalf of the agency <a href="http://www.toolofna.com/">Tool of NA</a>, and under the artistic direction of <a href="http://aramique.com/">Aramique Krauthamer</a>:<br><br>Immersive & interactive tunnel formed of transparent LED walls.<br><br>Intel booth on display at CES 2018 (Las Vegas).'
+    Stand Intel présenté au CES 2018 (Las Vegas).'
+  - Project carried out on behalf of the agency <a href="http://www.toolofna.com/">Tool of NA</a>, and under the artistic direction of <a href="http://aramique.com/">Aramique Krauthamer</a>:<br><br>Immersive & interactive tunnel formed of transparent LED walls.<br><br>Intel booth on display at CES 2018 (Las Vegas).
 - type: video
   src: https://player.vimeo.com/video/270974392
   w: '960'

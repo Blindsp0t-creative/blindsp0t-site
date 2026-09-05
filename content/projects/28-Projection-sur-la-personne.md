@@ -9,14 +9,12 @@ tags:
 - kinect
 cover: images/Projection-sur-la-personne/b70624ba_projPersonneNEW.png
 blocks:
-- type: text
-  html: 'À l’aide d’un couple kinect/vidéo-projecteur calibrés par un logiciel, nous sommes capables de projeter de la vidéo en temps-réel sur un corps en mouvement. <br><br>
+- type: columns
+  columns:
+  - 'À l’aide d’un couple kinect/vidéo-projecteur calibrés par un logiciel, nous sommes capables de projeter de la vidéo en temps-réel sur un corps en mouvement. <br><br>
 
-    Nous avons utilisé cette technique dans de nombreuses créations, notamment <a href="Hypermetrop-Fete-des-Lumieres-Lyon-2012">Hypermetrop</a> et <a href="Desincarne">Désincarné</a>.<strong></strong>
-
-     
-
-    Using a kinect/video-projector pair calibrated by a custom software, we are able to project video in real time onto a moving body.<br>
+    Nous avons utilisé cette technique dans de nombreuses créations, notamment <a href="Hypermetrop-Fete-des-Lumieres-Lyon-2012">Hypermetrop</a> et <a href="Desincarne">Désincarné</a>.<strong></strong>'
+  - 'Using a kinect/video-projector pair calibrated by a custom software, we are able to project video in real time onto a moving body.<br>
 
     <br>
 

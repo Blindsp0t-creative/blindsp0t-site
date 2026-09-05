@@ -9,14 +9,12 @@ tags:
 - '360'
 cover: images/Brick-in-the-wall/6e52f698_brickInTheWallNEW.png
 blocks:
-- type: text
-  html: 'Une installation interactive immersive, qui propose au spectateur de jouer et de déformer son environnement par ses mouvements. <br><br>
+- type: columns
+  columns:
+  - 'Une installation interactive immersive, qui propose au spectateur de jouer et de déformer son environnement par ses mouvements. <br><br>
 
-    Trois vidéoprojecteurs redessinent l’architecture de la pièce pour immerger l’utilisateur dans un monde virtuel que l’utilisateur peut déconstruire à sa guise.<strong></strong>
-
-     
-
-    An immersive interactive installation, which proposes to the spectator to play and deform his environment by his movements.<br>
+    Trois vidéoprojecteurs redessinent l’architecture de la pièce pour immerger l’utilisateur dans un monde virtuel que l’utilisateur peut déconstruire à sa guise.<strong></strong>'
+  - 'An immersive interactive installation, which proposes to the spectator to play and deform his environment by his movements.<br>
 
     <br>
 

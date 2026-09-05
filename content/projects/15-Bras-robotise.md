@@ -9,13 +9,12 @@ tags:
 - motion
 cover: images/Bras-robotise/b1feb7fe_robotic_arm_blindsp0t.jpg
 blocks:
-- type: text
-  html: 'Installation robotique réalisée pour le compte du groupe <br>
+- type: columns
+  columns:
+  - 'Installation robotique réalisée pour le compte du groupe <br>
 
-    <a href="http://www.razel-bec.com/">Razel-Bec</a> lors d’un événement interne. <br><br>Quel pourrait-etre le futur des outils du batiment ?<br><br>Le dispositif a également été présenté lors d’une fête de la science <br>à des enfants dans une école de la région Lyonnaise.
-
-
-    Robotic installation carried out on behalf of the group <a href="http://www.razel-bec.com/">Razel-Bec</a> during an internal event.<br>
+    <a href="http://www.razel-bec.com/">Razel-Bec</a> lors d’un événement interne. <br><br>Quel pourrait-etre le futur des outils du batiment ?<br><br>Le dispositif a également été présenté lors d’une fête de la science <br>à des enfants dans une école de la région Lyonnaise.'
+  - 'Robotic installation carried out on behalf of the group <a href="http://www.razel-bec.com/">Razel-Bec</a> during an internal event.<br>
 
     <br>What could be the future of building tools? <br><br>
 
