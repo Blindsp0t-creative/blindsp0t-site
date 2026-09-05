@@ -12,7 +12,7 @@ domain: "https://blindsp0t.com"
 # 1) Créer un formulaire gratuit sur https://formspree.io (destinataire = votre email)
 # 2) Coller ici l'identifiant du endpoint (ex: "xdorwkpl" tiré de https://formspree.io/f/xdorwkpl)
 contact_email: "contact@blindsp0t.com"      # utilisé pour le lien de repli mailto
-formspree_id: ""                             # ex: "xdorwkpl" — laisser vide = repli mailto
+formspree_id: "mrpgazjd"                             # ex: "xdorwkpl" — laisser vide = repli mailto
 
 # Réseaux sociaux (pied de page). url = "contact-form" -> pointe vers la page /contact/
 socials:
