@@ -1,0 +1,23 @@
+# Paramètres globaux du site (éditables sans toucher au code)
+title: BlindSp0t
+author: Antoine Vanel
+location: Lyon - FR
+description: "== blindsp0t == digital installations"
+keywords: "blindsp0t, installation, digitale, interactive, lyon, art, numérique, led, digital"
+
+# Nom de domaine final (utilisé pour les balises SEO / sitemap). Laisser vide avant mise en ligne.
+domain: "https://blindsp0t.com"
+
+# Formulaire de contact — Formspree.
+# 1) Créer un formulaire gratuit sur https://formspree.io (destinataire = votre email)
+# 2) Coller ici l'identifiant du endpoint (ex: "xdorwkpl" tiré de https://formspree.io/f/xdorwkpl)
+contact_email: "contact@blindsp0t.com"      # utilisé pour le lien de repli mailto
+formspree_id: ""                             # ex: "xdorwkpl" — laisser vide = repli mailto
+
+# Réseaux sociaux (pied de page). url = "contact-form" -> pointe vers la page /contact/
+socials:
+  - { label: Email, url: "contact-form" }
+  - { label: Facebook, url: "https://www.facebook.com/blindsp0t.creative" }
+  - { label: Instagram, url: "https://www.instagram.com/blindsp0t_studio/" }
+  - { label: Twitter, url: "https://twitter.com/Blindsp0t1" }
+  - { label: Vimeo, url: "https://vimeo.com/blindsp0t" }

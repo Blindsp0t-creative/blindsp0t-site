@@ -1,0 +1,318 @@
+#!/usr/bin/env python3
+"""
+Générateur de site statique BlindSp0t.
+Lit  content/ (site.yml, projects/*.md, pages/*.md) + assets/
+Écrit _site/  (prêt pour GitHub Pages).
+
+Usage : tools/.venv/bin/python tools/build.py
+"""
+import glob, html, re, shutil
+from pathlib import Path
+import yaml
+
+ROOT = Path(__file__).resolve().parent.parent
+CONTENT = ROOT / "content"
+ASSETS = ROOT / "assets"
+OUT = ROOT / "_site"
+
+# --------------------------------------------------------------- utils
+
+def load_md(path):
+    raw = Path(path).read_text(encoding="utf-8")
+    m = re.match(r"^---\n(.*?)\n---\n?(.*)$", raw, re.S)
+    if not m:
+        return {}, raw
+    return (yaml.safe_load(m.group(1)) or {}), m.group(2)
+
+
+def asset(p):
+    """Normalise un chemin d'image vers une URL absolue.
+    Accepte 'images/slug/x', 'assets/images/...', '/assets/...' ou une URL http."""
+    p = (p or "").strip()
+    if not p:
+        return ""
+    if p.startswith("http://") or p.startswith("https://") or p.startswith("/"):
+        return p
+    if p.startswith("assets/"):
+        return "/" + p
+    return "/assets/" + p
+
+
+def esc(s):
+    return html.escape(s or "", quote=True)
+
+
+def mini_markdown(text):
+    """Markdown minimal : paragraphes, listes à puces, titres ##, séparateur ---EN---."""
+    out, buf, in_ul = [], [], False
+
+    def flush_p():
+        if buf:
+            out.append("<p>" + "<br>".join(esc(x) for x in buf) + "</p>")
+            buf.clear()
+
+    def close_ul():
+        nonlocal in_ul
+        if in_ul:
+            out.append("</ul>"); in_ul = False
+
+    for line in text.splitlines():
+        s = line.strip()
+        if s == "---EN---":
+            flush_p(); close_ul(); out.append('<div class="lang-sep"></div>'); continue
+        if not s:
+            flush_p(); close_ul(); continue
+        if s.startswith("## "):
+            flush_p(); close_ul(); out.append("<h2>" + esc(s[3:]) + "</h2>"); continue
+        if s.startswith("* "):
+            flush_p()
+            if not in_ul:
+                out.append("<ul>"); in_ul = True
+            out.append("<li>" + esc(s[2:]) + "</li>"); continue
+        buf.append(s)
+    flush_p(); close_ul()
+    return "\n".join(out)
+
+
+# ------------------------------------------------------------ templates
+
+def nav(active=""):
+    def cls(n):
+        return ' class="active"' if n == active else ""
+    return (
+        '<nav class="topnav">'
+        f'<a href="/#projects"{cls("projects")}>Projects</a>'
+        f'<a href="/about/"{cls("about")}>About</a>'
+        f'<a href="/contact/"{cls("contact")}>Contact</a>'
+        '</nav>'
+    )
+
+
+def _iter_socials(site):
+    s = site.get("socials") or []
+    if isinstance(s, dict):
+        return [(k, v) for k, v in s.items()]
+    return [(x.get("label", ""), x.get("url", "")) for x in s]
+
+
+def footer(site):
+    socials = "".join(
+        f'<a href="{esc(_social_href(v))}"{"" if v=="contact-form" else " target=_blank rel=noopener"}>{esc(k)}</a>'
+        for k, v in _iter_socials(site)
+    )
+    return (
+        '<footer class="footer">'
+        f'<div>{esc(site.get("author",""))} — {esc(site.get("location",""))}</div>'
+        f'<div class="socials">{socials}</div>'
+        '</footer>'
+    )
+
+
+def _social_href(v):
+    return "/contact/" if v == "contact-form" else v
+
+
+def page_shell(site, title, body, active="", desc=""):
+    dtitle = f"{title} — {site['title']}" if title and title != site["title"] else site["title"]
+    return f"""<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(dtitle)}</title>
+<meta name="description" content="{esc(desc or site.get('description',''))}">
+<meta name="keywords" content="{esc(site.get('keywords',''))}">
+<meta property="og:title" content="{esc(dtitle)}">
+<meta property="og:description" content="{esc(desc or site.get('description',''))}">
+<meta property="og:type" content="website">
+<link rel="shortcut icon" href="/assets/brand/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+{nav(active)}
+{body}
+{footer(site)}
+<script src="/assets/js/app.js" defer></script>
+</body>
+</html>
+"""
+
+
+# --------------------------------------------------------------- blocks
+
+def render_text(b):
+    return f'<div class="block text">{b.get("html","")}</div>'
+
+
+def render_image(b):
+    src = esc(asset(b["file"]))
+    return f'<div class="block image"><img loading="lazy" src="{src}" alt=""></div>'
+
+
+def render_video(b):
+    src = esc(b.get("src", ""))
+    return f'<div class="block video"><div class="frame"><iframe src="{src}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>'
+
+
+def render_gallery(b):
+    imgs = b.get("images", [])
+    if not imgs:
+        return ""
+    layout = (b.get("layout") or "").lower()
+    if layout == "slideshow" and len(imgs) > 1:
+        slides = "".join(
+            f'<div class="slide{" active" if k==0 else ""}"><img loading="lazy" src="{esc(asset(im["file"]))}" alt=""></div>'
+            for k, im in enumerate(imgs)
+        )
+        dots = "".join(f'<span class="dot{" active" if k==0 else ""}"></span>' for k in range(len(imgs)))
+        arrows = ('<button class="arrow left" aria-label="Précédent">‹</button>'
+                  '<button class="arrow right" aria-label="Suivant">›</button>') if b.get("arrows", True) else ""
+        return (
+            f'<div class="block gallery" data-slideshow data-autoplay="{1 if b.get("autoplay") else 0}" '
+            f'data-speed="{b.get("speed",0)}">'
+            f'<div class="slides">{slides}{arrows}</div>'
+            f'<div class="dots">{dots}</div>'
+            '</div>'
+        )
+    # freeform / columns / gallery -> grille
+    cls = "gallery-grid cols-1" if len(imgs) == 1 else "gallery-grid"
+    cells = "".join(f'<img loading="lazy" src="{esc(asset(im["file"]))}" alt="">' for im in imgs)
+    return f'<div class="block"><div class="{cls}">{cells}</div></div>'
+
+
+BLOCK_RENDER = {"text": render_text, "image": render_image, "video": render_video, "gallery": render_gallery}
+
+
+# ---------------------------------------------------------------- build
+
+def build():
+    site = yaml.safe_load((CONTENT / "site.yml").read_text(encoding="utf-8"))
+
+    projects = []
+    for f in sorted(glob.glob(str(CONTENT / "projects" / "*.md"))):
+        fm, _ = load_md(f)
+        projects.append(fm)
+    projects.sort(key=lambda p: p.get("order", 999))
+
+    # --- clean output ---
+    if OUT.exists():
+        shutil.rmtree(OUT)
+    OUT.mkdir(parents=True)
+
+    # --- assets ---
+    shutil.copytree(ASSETS, OUT / "assets")
+
+    # --- interface d'admin (CMS web) ---
+    admin_src = ROOT / "admin"
+    if admin_src.exists():
+        shutil.copytree(admin_src, OUT / "admin")
+
+    # --- CNAME + robots + nojekyll ---
+    domain = (site.get("domain") or "").replace("https://", "").replace("http://", "").strip("/")
+    if domain:
+        (OUT / "CNAME").write_text(domain + "\n")
+    (OUT / ".nojekyll").write_text("")
+    (OUT / "robots.txt").write_text("User-agent: *\nAllow: /\n")
+
+    # --- thumbnails grid (partagé accueil + /projects) ---
+    def thumb(p):
+        tags = "".join(f"<span>{esc(t)}</span>" for t in (p.get("tags") or []))
+        cover = esc(asset(p.get("cover"))) if p.get("cover") else ""
+        img = (f'<img class="cover-img" loading="lazy" src="{cover}" alt="">'
+               if cover else '<div class="cover-img"></div>')
+        return (
+            '<div class="thumb">'
+            f'<a class="cover" href="/project/{esc(p["slug"])}/">{img}</a>'
+            f'<div class="title"><a href="/project/{esc(p["slug"])}/">{esc(p["title"])}</a></div>'
+            f'<div class="tags">{tags}</div>'
+            '</div>'
+        )
+    grid = '<div class="thumbs-wrap"><div class="thumbs" id="projects">' + \
+           "".join(thumb(p) for p in projects) + "</div></div>"
+
+    # --- accueil : splash + hero + grille ---
+    logo = "/assets/brand/logo_white.png"
+    home_body = (
+        f'<div id="splash"><img src="{logo}" alt="BlindSp0t"></div>'
+        f'<header class="hero"><img src="{logo}" alt="BlindSp0t"></header>'
+        f'{grid}'
+    )
+    (OUT / "index.html").write_text(page_shell(site, site["title"], home_body, active="projects"),
+                                    encoding="utf-8")
+
+    # --- page /projects/ (grille seule) ---
+    (OUT / "projects").mkdir()
+    (OUT / "projects" / "index.html").write_text(
+        page_shell(site, "Projects", grid, active="projects"), encoding="utf-8")
+
+    # --- pages projet ---
+    for p in projects:
+        body_blocks = "".join(BLOCK_RENDER.get(b["type"], lambda b: "")(b) for b in p.get("blocks", []))
+        desc = re.sub(r"<[^>]+>", " ", next((b["html"] for b in p.get("blocks", []) if b["type"] == "text"), ""))
+        desc = re.sub(r"\s+", " ", desc).strip()[:180]
+        body = (
+            '<main class="page">'
+            f'<h1 class="project-title">{esc(p["title"])}</h1>'
+            f'{body_blocks}'
+            '<hr>'
+            '<p><a href="/#projects" style="border-bottom:1px solid rgba(255,255,255,.4)">← Projects</a></p>'
+            '</main>'
+        )
+        d = OUT / "project" / p["slug"]
+        d.mkdir(parents=True)
+        (d / "index.html").write_text(page_shell(site, p["title"], body, desc=desc), encoding="utf-8")
+
+    # --- About ---
+    fm, md = load_md(CONTENT / "pages" / "about.md")
+    body = f'<main class="page"><h1 class="project-title">{esc(fm.get("title","About"))}</h1><div class="prose">{mini_markdown(md)}</div></main>'
+    (OUT / "about").mkdir()
+    (OUT / "about" / "index.html").write_text(page_shell(site, "About", body, active="about"), encoding="utf-8")
+
+    # --- Privacy ---
+    fm, md = load_md(CONTENT / "pages" / "privacy.md")
+    body = f'<main class="page"><div class="prose">{mini_markdown(md)}</div></main>'
+    d = OUT / "engagement-confidentialite"; d.mkdir()
+    (d / "index.html").write_text(page_shell(site, fm.get("title", "Confidentialité"), body), encoding="utf-8")
+
+    # --- Contact (Formspree) ---
+    (OUT / "contact").mkdir()
+    (OUT / "contact" / "index.html").write_text(
+        page_shell(site, "Contact", contact_body(site), active="contact"), encoding="utf-8")
+
+    # --- sitemap ---
+    urls = ["/", "/about/", "/contact/", "/projects/"] + [f"/project/{p['slug']}/" for p in projects]
+    base = site.get("domain", "").rstrip("/")
+    sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    sm += "".join(f"<url><loc>{base}{u}</loc></url>\n" for u in urls) + "</urlset>\n"
+    (OUT / "sitemap.xml").write_text(sm, encoding="utf-8")
+
+    print(f"✓ Build OK : {len(projects)} projets → {OUT}")
+
+
+def contact_body(site):
+    fid = (site.get("formspree_id") or "").strip()
+    email = site.get("contact_email", "")
+    if fid:
+        form = (
+            f'<form class="contact-form" action="https://formspree.io/f/{esc(fid)}" method="POST">'
+            '<div><label>Nom</label><input type="text" name="name" required></div>'
+            '<div><label>Email</label><input type="email" name="email" required></div>'
+            '<div><label>Message</label><textarea name="message" required></textarea></div>'
+            '<button type="submit">Envoyer</button>'
+            '</form>'
+        )
+    else:
+        form = (
+            '<p style="color:rgba(255,255,255,.6);max-width:46rem">'
+            'Le formulaire sera activé dès que l’identifiant Formspree sera renseigné dans '
+            '<code>content/site.yml</code>. En attendant :</p>'
+            f'<p><a href="mailto:{esc(email)}" style="border-bottom:1px solid rgba(255,255,255,.4)">{esc(email)}</a></p>'
+        )
+    return f'<main class="page"><h1 class="project-title">Contact</h1>{form}</main>'
+
+
+if __name__ == "__main__":
+    build()

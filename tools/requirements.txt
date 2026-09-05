@@ -1,0 +1,5 @@
+# Dépendances de l'outillage local (scraper, build, outil de gestion)
+beautifulsoup4>=4.12
+pyyaml>=6.0
+requests>=2.31
+Pillow>=10.0

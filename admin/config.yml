@@ -1,0 +1,117 @@
+# Configuration Decap CMS — interface d'édition web (blindsp0t.com/admin/)
+# L'édition passe par GitHub : chaque enregistrement crée un commit,
+# et GitHub Actions reconstruit puis publie le site automatiquement.
+
+backend:
+  name: github
+  repo: Blindsp0t-creative/blindsp0t-site
+  branch: main
+  # base_url : relais OAuth GitHub (voir README, section « CMS web »).
+  # Exemple avec le worker fourni : https://VOTRE-RELAIS.workers.dev
+  base_url: https://REMPLACER-PAR-VOTRE-RELAIS-OAUTH
+
+# Sauvegarde des éditions en brouillon local tant que l'onglet est ouvert
+publish_mode: simple
+locale: fr
+
+# Dossier par défaut pour les images téléversées
+media_folder: "assets/images/uploads"
+public_folder: "/assets/images/uploads"
+
+collections:
+  # ---------------------------------------------------------------- Projets
+  - name: projects
+    label: Projets
+    label_singular: Projet
+    folder: content/projects
+    create: true
+    # nom de fichier : 01-mon-slug.md (préserve l'ordre d'affichage)
+    slug: "{{fields.order}}-{{fields.slug}}"
+    identifier_field: title
+    summary: "{{fields.order}} — {{fields.title}}"
+    sortable_fields: [order, title]
+    media_folder: "/assets/images/{{fields.slug}}"
+    public_folder: "/assets/images/{{fields.slug}}"
+    fields:
+      - { label: Titre, name: title, widget: string }
+      - { label: "Slug (URL, sans espaces)", name: slug, widget: string, pattern: ['^[A-Za-z0-9-]+$', 'Lettres, chiffres et tirets uniquement'] }
+      - { label: "Ordre d'affichage", name: order, widget: number, value_type: int, min: 1, default: 99 }
+      - { label: Tags, name: tags, widget: list, required: false, default: [] }
+      - { label: "Image de couverture", name: cover, widget: image, required: false, hint: "Vignette affichée sur la page d'accueil" }
+      - label: Contenu
+        name: blocks
+        label_singular: Bloc
+        widget: list
+        types:
+          - label: Texte
+            name: text
+            widget: object
+            summary: "Texte : {{fields.html}}"
+            fields:
+              - { label: Texte, name: html, widget: markdown }
+          - label: Image
+            name: image
+            widget: object
+            fields:
+              - { label: Image, name: file, widget: image }
+          - label: Galerie
+            name: gallery
+            widget: object
+            fields:
+              - { label: Disposition, name: layout, widget: select, options: [slideshow, freeform, columns], default: slideshow }
+              - { label: "Diaporama automatique", name: autoplay, widget: boolean, default: true }
+              - { label: "Vitesse (secondes)", name: speed, widget: number, value_type: float, default: 2.5 }
+              - { label: Flèches, name: arrows, widget: boolean, default: true }
+              - label: Images
+                name: images
+                widget: list
+                summary: "{{fields.file}}"
+                field: { label: Image, name: file, widget: image }
+          - label: "Vidéo (Vimeo / YouTube)"
+            name: video
+            widget: object
+            fields:
+              - { label: "URL d'intégration (embed)", name: src, widget: string, hint: "Ex : https://player.vimeo.com/video/123456 ou https://www.youtube.com/embed/ABC" }
+
+  # ------------------------------------------------------------------ Pages
+  - name: pages
+    label: Pages
+    files:
+      - name: about
+        label: À propos (About)
+        file: content/pages/about.md
+        fields:
+          - { label: Titre, name: title, widget: hidden, default: About }
+          - { label: Slug, name: slug, widget: hidden, default: about }
+          - { label: "Texte (FR puis, après la ligne ---EN---, EN)", name: body, widget: markdown }
+      - name: privacy
+        label: Confidentialité
+        file: content/pages/privacy.md
+        fields:
+          - { label: Titre, name: title, widget: string }
+          - { label: Slug, name: slug, widget: hidden, default: engagement-confidentialite }
+          - { label: Texte, name: body, widget: markdown }
+
+  # --------------------------------------------------------------- Réglages
+  - name: settings
+    label: Réglages
+    files:
+      - name: site
+        label: Réglages du site
+        file: content/site.yml
+        fields:
+          - { label: Titre du site, name: title, widget: string }
+          - { label: Auteur, name: author, widget: string }
+          - { label: Lieu, name: location, widget: string }
+          - { label: Description, name: description, widget: string }
+          - { label: Mots-clés, name: keywords, widget: string, required: false }
+          - { label: Domaine, name: domain, widget: string, required: false }
+          - { label: "Email de contact", name: contact_email, widget: string }
+          - { label: "Identifiant Formspree", name: formspree_id, widget: string, required: false, hint: "Identifiant du endpoint Formspree (active le formulaire de contact)" }
+          - label: "Réseaux sociaux"
+            name: socials
+            widget: list
+            summary: "{{fields.label}}"
+            fields:
+              - { label: Libellé, name: label, widget: string }
+              - { label: URL, name: url, widget: string }

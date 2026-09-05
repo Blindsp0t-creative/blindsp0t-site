@@ -1,0 +1,227 @@
+/* =========================================================================
+   BlindSp0t — feuille de style (reproduction fidèle du site Cargo d'origine)
+   Tokens repris de l'ancien thème : fond noir, IBM Plex Mono, Space Mono,
+   base 62.5% (1rem = 10px), grille de vignettes, typographie monospace.
+   ========================================================================= */
+
+:root {
+  --bg: #000000;
+  --fg: rgba(255, 255, 255, 1);
+  --fg-dim: rgba(255, 255, 255, 0.6);
+  --fg-faint: rgba(255, 255, 255, 0.4);
+  --rule: rgba(127, 127, 127, 0.2);
+  --pad: 4.9rem;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --mono-alt: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 62.5%; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.3;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: var(--fg); text-decoration: none; }
+a:active { opacity: 0.7; }
+img { max-width: 100%; border: 0; display: block; }
+
+h1 {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 2.4rem;
+  line-height: 1.1;
+  margin: 0;
+  color: var(--fg);
+}
+h2 { font-family: var(--mono); font-weight: 400; font-size: 3rem; line-height: 1.2; margin: 0; }
+
+hr { background: var(--rule); border: 0; height: 1px; display: block; margin: 1.6rem 0; }
+
+/* ----------------------------------------------------------------- Nav */
+.topnav {
+  position: fixed;
+  top: 3rem;
+  right: 3rem;
+  z-index: 100;
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+  display: flex;
+  gap: 1.2rem;
+  mix-blend-mode: difference;
+}
+.topnav a { color: var(--fg); }
+.topnav a:hover, .topnav a.active { text-decoration: underline; text-underline-offset: 3px; }
+
+/* --------------------------------------------------------------- Hero */
+.hero {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero img { width: min(60vw, 720px); height: auto; }
+
+/* --------------------------------------------------------- Thumbnails */
+.thumbs-wrap { width: 88%; margin: 0 auto; padding: var(--pad) 0 6rem; }
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.2rem;
+}
+.thumb { display: block; }
+.thumb a.cover { display: block; }
+.thumb .cover-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  outline: 1px solid rgba(255, 255, 255, 0.12);
+  outline-offset: -1px;
+  background: #0a0a0a;
+}
+.thumb .title {
+  margin-top: 2rem;
+  margin-bottom: 0.3rem;
+  font-family: var(--mono-alt);
+  font-size: 1.0rem;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+.thumb .tags {
+  font-family: var(--mono-alt);
+  font-size: 0.7rem;
+  line-height: 1.2;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.thumb .tags span::after { content: ", "; }
+.thumb .tags span:last-child::after { content: ""; }
+
+/* ------------------------------------------------------- Project page */
+.page { width: 80%; max-width: 1100px; margin: 0 auto; padding: var(--pad) 0 8rem; }
+.page h1.project-title { margin-bottom: 2rem; }
+.block { margin: 2rem 0; }
+.block.text {
+  max-width: 65rem;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  letter-spacing: 0.02rem;
+}
+.block.text a { border-bottom: 1px solid var(--fg-faint); }
+.block.image img { width: 100%; height: auto; margin-bottom: 0.5em; }
+
+/* Vidéo (embed responsive 16:9) */
+.block.video .frame {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #000;
+}
+.block.video iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; border: 0;
+}
+
+/* --------------------------------------------------------- Slideshow */
+.gallery { position: relative; width: 100%; user-select: none; }
+.gallery .slides { position: relative; width: 100%; overflow: hidden; }
+.gallery .slide {
+  display: none;
+  width: 100%;
+}
+.gallery .slide.active { display: block; }
+.gallery .slide img { width: 100%; height: auto; }
+.gallery .cap {
+  margin-top: 1.2rem;
+  font-size: 1.1rem;
+  color: var(--fg-dim);
+  font-family: var(--mono);
+}
+.gallery .arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 36px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.25); color: #fff; font-size: 20px; line-height: 1;
+  z-index: 3; border: 0;
+}
+.gallery .arrow:hover { background: rgba(0,0,0,0.5); }
+.gallery .arrow.left { left: 10px; }
+.gallery .arrow.right { right: 10px; }
+.gallery .dots { display: flex; gap: 6px; justify-content: center; margin-top: 1rem; }
+.gallery .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fg-faint); cursor: pointer; }
+.gallery .dot.active { background: var(--fg); }
+
+/* Galerie non-diaporama (freeform / columns) → grille responsive */
+.gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+.gallery-grid.cols-1 { grid-template-columns: 1fr; }
+.gallery-grid img { width: 100%; height: auto; }
+@media (max-width: 600px) { .gallery-grid { grid-template-columns: 1fr; } }
+
+/* ------------------------------------------------------------ Content */
+.prose { max-width: 65rem; }
+.prose p { margin: 0 0 1.3em; }
+.prose ul { margin: 0 0 1.3em; padding-left: 1.4em; }
+.prose a { border-bottom: 1px solid var(--fg-faint); }
+.lang-sep { height: 3rem; }
+
+/* ------------------------------------------------------------- Footer */
+.footer {
+  width: 88%; margin: 0 auto; padding: 3rem 0 4rem;
+  font-family: var(--mono-alt); font-size: 0.9rem; text-transform: uppercase;
+  letter-spacing: 0.05rem; color: var(--fg-faint);
+  display: flex; flex-wrap: wrap; gap: 1.6rem; justify-content: space-between;
+  border-top: 1px solid var(--rule);
+}
+.footer a { color: var(--fg-dim); }
+.footer a:hover { color: var(--fg); }
+.footer .socials { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+
+/* --------------------------------------------------------- Contact */
+.contact-form { max-width: 46rem; display: flex; flex-direction: column; gap: 1.4rem; margin-top: 2rem; }
+.contact-form label { font-size: 1.0rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.05rem; }
+.contact-form input, .contact-form textarea {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
+  color: var(--fg); font-family: var(--mono); font-size: 1.2rem; padding: 1rem 1.2rem; width: 100%;
+}
+.contact-form textarea { min-height: 14rem; resize: vertical; }
+.contact-form button {
+  align-self: flex-start; background: rgba(255,255,255,0.15); color: var(--fg);
+  border: 1px solid rgba(255,255,255,0.3); font-family: var(--mono-alt); font-size: 1.2rem;
+  text-transform: uppercase; letter-spacing: 0.05rem; padding: 1rem 2rem; cursor: pointer;
+}
+.contact-form button:hover { background: rgba(255,255,255,0.28); }
+
+/* ----------------------------------------------------- Splash intro */
+#splash {
+  position: fixed; inset: 0; z-index: 1000; background: #000;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.8s ease;
+}
+#splash img { width: min(60vw, 720px); height: auto; }
+#splash.hide { opacity: 0; pointer-events: none; }
+
+/* ------------------------------------------------------- Responsive */
+@media (max-width: 900px) {
+  .thumbs { grid-template-columns: repeat(2, 1fr); }
+  .page, .prose, .block.text { width: 88%; }
+}
+@media (max-width: 600px) {
+  :root { --pad: 2.4rem; }
+  .thumbs { grid-template-columns: 1fr; }
+  .topnav { top: 1.6rem; right: 1.6rem; gap: 0.9rem; }
+  .hero img, #splash img { width: 78vw; }
+}

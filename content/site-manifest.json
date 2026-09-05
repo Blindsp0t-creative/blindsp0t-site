@@ -1,0 +1,51 @@
+{
+  "site": {
+    "title": "BlindSp0t",
+    "author": "Antoine Vanel",
+    "location": "Lyon - FR",
+    "description": "== blindsp0t == digital installations",
+    "source_platform": "Cargo (cargo.site)",
+    "cargo_site_id": "109807",
+    "source_url": "https://blindsp0t.com",
+    "fonts": ["IBM Plex Mono", "Space Mono", "Rubik"],
+    "look": "fond noir, typographie monospace, minimaliste, splash animé 'BLINDSPOT'",
+    "socials": {
+      "facebook": "https://www.facebook.com/blindsp0t.creative",
+      "instagram": "https://www.instagram.com/blindsp0t_studio/",
+      "twitter": "https://twitter.com/Blindsp0t1",
+      "vimeo": "https://vimeo.com/blindsp0t"
+    },
+    "extra_pages": ["About", "Engagement-confidentialite", "contact-form"]
+  },
+  "projects": [
+    {"slug": "La-Fin-Du-Present", "title": "La Fin Du Présent", "tags": ["Theater", "Real-time volumetric capture"]},
+    {"slug": "Girl-Friend-Experience", "title": "Girl Friend Experience", "tags": ["Volumetric capture", "Multi-display installation"]},
+    {"slug": "To-Be-A-Machine-version-2-0", "title": "To Be A Machine (version 2.0)", "tags": ["VR", "Theater", "Dead Centre", "Deepfake"]},
+    {"slug": "GERMINATION", "title": "GERMINATION", "tags": ["AR", "Theater", "Haut et Court"]},
+    {"slug": "Les-AVEUGLES", "title": "Les AVEUGLES", "tags": ["VR", "Theater", "Maeterlinck", "INVIVO"]},
+    {"slug": "FIELDS", "title": "FIELDS", "tags": ["fulldome", "planetarium", "360°", "immersive", "interactive", "realtime"]},
+    {"slug": "School-of-Moon-Cie-Shonen-Eric-Castaing", "title": "School of Moon - Cie Shonen, Eric Castaing", "tags": ["contemporary dance", "robot", "nao", "interactive", "live"]},
+    {"slug": "Geologie-des-flux", "title": "Géologie des flux", "tags": ["LED", "installation", "interactive", "realtime", "machine learning", "openpose"]},
+    {"slug": "Decorporation-Mirage-Festival", "title": "Decorporation @ Mirage Festival", "tags": ["virtual", "reality", "mirage", "festival", "installation", "interactive"]},
+    {"slug": "Intel-5G-tunnel-CES-2018", "title": "Intel 5G tunnel @ CES 2018", "tags": ["CES", "5G", "Intel", "installation", "interactive"]},
+    {"slug": "Projection-Collective", "title": "Projection Collective", "tags": ["installation", "interactive", "quai des savoirs", "ombres"]},
+    {"slug": "Scenographie-Mirage-Festival", "title": "Scénographie - Mirage Festival", "tags": ["scenographie", "led", "video", "mirage festival"]},
+    {"slug": "Big-Data", "title": "Big Data", "tags": ["théatre", "scénographie", "interactive"]},
+    {"slug": "Passages", "title": "Passages", "tags": ["danse", "depthkit", "interactive", "mouvement", "kinect"]},
+    {"slug": "Bras-robotise", "title": "Bras robotisé", "tags": ["installation", "interactive", "leap", "motion"]},
+    {"slug": "RetroAction", "title": "RetroAction", "tags": ["Mat3r Dolorossa", "clip", "depthKit", "VFX"]},
+    {"slug": "Clip-Mat3r-Dolorossa", "title": "Clip - Mat3r Dolorossa", "tags": ["kinect", "mat3r dolorossa"]},
+    {"slug": "Scenographie-Carl-Craig-Marcell-Dettman-We-Are-Reality", "title": "Scénographie - Carl Craig / Marcell Dettman - We Are Reality", "tags": ["scenographie", "transbordeur"]},
+    {"slug": "Tekhne", "title": "Tekhné", "tags": ["spectacle", "vivant", "interactif", "scénographie"]},
+    {"slug": "Journal-d-un-seul-jour", "title": "Journal d'un seul jour", "tags": ["Danse", "compagnie Acte", "maison de la danse", "numérique"]},
+    {"slug": "Extra-Nuits-Sonores-2016-Chambre-Fraiche-SOFFFA", "title": "Extra Nuits Sonores 2016 : Chambre Fraiche @ SOFFFA", "tags": ["nuits", "sonores", "sofffa", "installation", "interactive"]},
+    {"slug": "Riddim-Collision-n-17", "title": "Riddim Collision n#17", "tags": []},
+    {"slug": "Hi-StrikerFete-des-Lumieres-Lyon-2014", "title": "Hi StrikerFête des Lumières - Lyon 2014", "tags": ["installation", "interactive", "lumiere", "festival"]},
+    {"slug": "TranJS", "title": "TranJS", "tags": ["Installation interactive", "Projection au sol"]},
+    {"slug": "Hypermetrop-Fete-des-Lumieres-Lyon-2012", "title": "Hypermetrop - Fete des Lumieres Lyon 2012", "tags": ["spectacle vivant", "danse", "video interactive", "mapping"]},
+    {"slug": "Dubai-Festival-of-Lights", "title": "Dubai Festival of Lights", "tags": ["installation", "lumière", "interactive"]},
+    {"slug": "Brick-in-the-wall", "title": "Brick in the wall", "tags": ["installation", "immersive", "interactive", "360"]},
+    {"slug": "Projection-sur-la-personne", "title": "Projection sur la personne", "tags": ["interactive", "projection", "mapping", "kinect"]},
+    {"slug": "Desincarne", "title": "Desincarne", "tags": ["spectacle", "vivant", "scenographie", "video", "interactive"]}
+  ]
+}

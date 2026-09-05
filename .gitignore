@@ -1,0 +1,14 @@
+# Sortie de build (régénérée par GitHub Actions)
+/_site/
+
+# Environnement Python local
+tools/.venv/
+__pycache__/
+*.pyc
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Logs temporaires
+*.log
