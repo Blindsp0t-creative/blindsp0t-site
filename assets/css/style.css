@@ -17,7 +17,9 @@
 
 * { box-sizing: border-box; }
 
-html { font-size: 62.5%; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* Base typographique reprise exactement du site d'origine (Cargo réglait
+   font-size: 90.63% en inline ≈ 14.5px). Tous les rem en découlent. */
+html { font-size: 90.63%; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -136,16 +138,16 @@ hr { background: var(--rule); border: 0; height: 1px; display: block; margin: 1.
 .thumbs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2.2rem;
+  gap: 1.4rem 1.1rem;
+  align-items: start;
 }
 .thumb { display: block; }
 .thumb a.cover { display: block; }
+/* Vignettes : ratio naturel de l'image (pas de recadrage), comme l'original */
 .thumb .cover-img {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  outline: 1px solid rgba(255, 255, 255, 0.12);
-  outline-offset: -1px;
+  height: auto;
+  display: block;
   background: #0a0a0a;
 }
 .thumb .title {
@@ -302,12 +304,14 @@ hr { background: var(--rule); border: 0; height: 1px; display: block; margin: 1.
 
 /* ------------------------------------------------------- Responsive */
 @media (max-width: 900px) {
-  .thumbs { grid-template-columns: repeat(2, 1fr); }
   .page, .prose, .block.text { width: 88%; }
 }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
+  .thumbs { grid-template-columns: repeat(2, 1fr); }
   :root { --pad: 2.4rem; }
-  .thumbs { grid-template-columns: 1fr; }
   .topnav { padding: 1.2rem 6%; gap: 0.9rem; }
   .hero img, #splash img { width: 78vw; }
+}
+@media (max-width: 400px) {
+  .thumbs { grid-template-columns: 1fr; }
 }
