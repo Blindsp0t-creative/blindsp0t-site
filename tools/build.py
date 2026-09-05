@@ -185,25 +185,25 @@ def render_gallery(b, prefix):
     imgs = b.get("images", [])
     if not imgs:
         return ""
-    layout = (b.get("layout") or "").lower()
-    if layout == "slideshow" and len(imgs) > 1:
-        slides = "".join(
-            f'<div class="slide{" active" if k==0 else ""}"><img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt=""></div>'
-            for k, im in enumerate(imgs)
-        )
-        dots = "".join(f'<span class="dot{" active" if k==0 else ""}"></span>' for k in range(len(imgs)))
-        arrows = ('<button class="arrow left" aria-label="Précédent">‹</button>'
-                  '<button class="arrow right" aria-label="Suivant">›</button>') if b.get("arrows", True) else ""
-        return (
-            f'<div class="block gallery" data-slideshow data-autoplay="{1 if b.get("autoplay") else 0}" '
-            f'data-speed="{b.get("speed",0)}">'
-            f'<div class="slides">{slides}{arrows}</div>'
-            f'<div class="dots">{dots}</div>'
-            '</div>'
-        )
-    cls = "gallery-grid cols-1" if len(imgs) == 1 else "gallery-grid"
-    cells = "".join(f'<img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt="">' for im in imgs)
-    return f'<div class="block"><div class="{cls}">{cells}</div></div>'
+    # une seule image -> affichage simple
+    if len(imgs) == 1:
+        im = imgs[0]
+        return f'<div class="block image"><img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt=""></div>'
+    # plusieurs images -> diaporama autoplay (rendu uniforme pour toutes les galeries)
+    speed = b.get("speed") or 2.5
+    slides = "".join(
+        f'<div class="slide{" active" if k==0 else ""}"><img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt=""></div>'
+        for k, im in enumerate(imgs)
+    )
+    dots = "".join(f'<span class="dot{" active" if k==0 else ""}"></span>' for k in range(len(imgs)))
+    arrows = ('<button class="arrow left" aria-label="Précédent">‹</button>'
+              '<button class="arrow right" aria-label="Suivant">›</button>') if b.get("arrows", True) else ""
+    return (
+        f'<div class="block gallery" data-slideshow data-autoplay="1" data-speed="{speed}">'
+        f'<div class="slides">{slides}{arrows}</div>'
+        f'<div class="dots">{dots}</div>'
+        '</div>'
+    )
 
 
 def render_columns(b, prefix):
