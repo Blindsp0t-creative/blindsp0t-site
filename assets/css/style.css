@@ -49,12 +49,20 @@ hr { background: var(--rule); border: 0; height: 1px; display: block; margin: 1.
 
 /* ----------------------------------------------------------------- Nav */
 /* Nav dans le flux du document (comme l'original) : sur l'accueil elle se
-   trouve juste après le hero plein écran, donc découverte au scroll. */
+   trouve juste après le hero plein écran, donc découverte au scroll ; en mode
+   sticky elle se fige ensuite en haut et reste accessible. Fond sombre
+   translucide pour rester lisible par-dessus les images. */
 .topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
   gap: 1.2rem;
   justify-content: flex-end;
-  padding: 2.4rem 6% 0.6rem;
+  padding: 1.6rem 6%;
+  background: rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   font-family: var(--mono);
   font-size: 1.1rem;
   letter-spacing: 0.05rem;
@@ -267,6 +275,6 @@ hr { background: var(--rule); border: 0; height: 1px; display: block; margin: 1.
 @media (max-width: 600px) {
   :root { --pad: 2.4rem; }
   .thumbs { grid-template-columns: 1fr; }
-  .topnav { padding: 1.6rem 6% 0.4rem; gap: 0.9rem; }
+  .topnav { padding: 1.2rem 6%; gap: 0.9rem; }
   .hero img, #splash img { width: 78vw; }
 }
