@@ -11,9 +11,11 @@ prévisualisation locale.
 
 Usage : tools/.venv/bin/python tools/build.py
 """
-import glob, html, re, shutil
+import glob, hashlib, html, re, shutil
 from pathlib import Path
 import yaml
+
+ASSET_VER = ""   # cache-buster (hash de style.css + app.js), défini au build
 
 ROOT = Path(__file__).resolve().parent.parent
 CONTENT = ROOT / "content"
@@ -146,13 +148,13 @@ def page_shell(site, title, body, prefix="", active="", desc=""):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{prefix}assets/css/style.css">
+<link rel="stylesheet" href="{prefix}assets/css/style.css?v={ASSET_VER}">
 </head>
 <body>
 {nav(prefix, active)}
 {body}
 {footer(site, prefix)}
-<script src="{prefix}assets/js/app.js" defer></script>
+<script src="{prefix}assets/js/app.js?v={ASSET_VER}" defer></script>
 </body>
 </html>
 """
@@ -205,6 +207,11 @@ BLOCK_RENDER = {"text": render_text, "image": render_image, "video": render_vide
 # ---------------------------------------------------------------- build
 
 def build():
+    global ASSET_VER
+    css = (ASSETS / "css" / "style.css").read_bytes()
+    js = (ASSETS / "js" / "app.js").read_bytes()
+    ASSET_VER = hashlib.md5(css + js).hexdigest()[:8]
+
     site = yaml.safe_load((CONTENT / "site.yml").read_text(encoding="utf-8"))
 
     projects = []
@@ -253,6 +260,10 @@ def build():
         'scrolling="no" loading="eager"></iframe>'
         '<img class="logo-fallback" src="assets/brand/logo_white.png" alt="BlindSp0t">'
         '</header>'
+        '<a class="scroll-hint" href="#projects" aria-label="Découvrir les projets">'
+        '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">'
+        '<path d="M12 4 V20 M5 13 L12 20 L19 13" stroke="currentColor" stroke-width="1.6" '
+        'stroke-linecap="round" stroke-linejoin="round"/></svg></a>'
         f'{grid("")}'
     )
     (OUT / "index.html").write_text(

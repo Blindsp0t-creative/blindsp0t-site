@@ -18,6 +18,17 @@
     }
   }
 
+  // --- Indice de scroll (accueil) : s'estompe dès qu'on descend ---
+  var hint = document.querySelector('.scroll-hint');
+  if (hint) {
+    var toggleHint = function () {
+      if (window.scrollY > 120) hint.classList.add('hidden');
+      else hint.classList.remove('hidden');
+    };
+    window.addEventListener('scroll', toggleHint, { passive: true });
+    toggleHint();
+  }
+
   // --- Diaporamas ---
   document.querySelectorAll('.gallery[data-slideshow]').forEach(function (g) {
     var slides = Array.prototype.slice.call(g.querySelectorAll('.slide'));
