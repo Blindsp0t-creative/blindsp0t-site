@@ -143,10 +143,11 @@ hr { background: var(--rule); border: 0; height: 1px; display: block; margin: 1.
 }
 .thumb { display: block; }
 .thumb a.cover { display: block; }
-/* Vignettes : ratio naturel de l'image (pas de recadrage), comme l'original */
+/* Vignettes recadrées en 16:9 pour une grille régulière */
 .thumb .cover-img {
   width: 100%;
-  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   display: block;
   background: #0a0a0a;
 }
