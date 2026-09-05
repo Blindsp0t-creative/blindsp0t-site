@@ -246,11 +246,13 @@ def build():
         return ('<div class="thumbs-wrap"><div class="thumbs" id="projects">'
                 + "".join(thumb(p) for p in projects) + "</div></div>")
 
-    # --- accueil ---
-    logo = "assets/brand/logo_white.png"
+    # --- accueil (logo animé p5.js en hero, cf. assets/logo-anim/) ---
     home_body = (
-        f'<div id="splash"><img src="{logo}" alt="BlindSp0t"></div>'
-        f'<header class="hero"><img src="{logo}" alt="BlindSp0t"></header>'
+        '<header class="hero">'
+        '<iframe class="logo-anim" src="assets/logo-anim/index.html" title="BlindSp0t" '
+        'scrolling="no" loading="eager"></iframe>'
+        '<img class="logo-fallback" src="assets/brand/logo_white.png" alt="BlindSp0t">'
+        '</header>'
         f'{grid("")}'
     )
     (OUT / "index.html").write_text(
