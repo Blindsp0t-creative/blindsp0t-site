@@ -191,16 +191,23 @@ def render_gallery(b, prefix):
         return f'<div class="block image"><img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt=""></div>'
     # plusieurs images -> diaporama autoplay (rendu uniforme pour toutes les galeries)
     speed = b.get("speed") or 2.5
+    # hauteur constante = ratio de la 1re image (évite les sauts de mise en page)
+    try:
+        w = float(imgs[0].get("w") or 0)
+        h = float(imgs[0].get("h") or 0)
+        ar = f"{w:g} / {h:g}" if w > 0 and h > 0 else "16 / 9"
+    except (TypeError, ValueError):
+        ar = "16 / 9"
     slides = "".join(
         f'<div class="slide{" active" if k==0 else ""}"><img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt=""></div>'
         for k, im in enumerate(imgs)
     )
     dots = "".join(f'<span class="dot{" active" if k==0 else ""}"></span>' for k in range(len(imgs)))
-    arrows = ('<button class="arrow left" aria-label="Précédent">‹</button>'
-              '<button class="arrow right" aria-label="Suivant">›</button>') if b.get("arrows", True) else ""
+    arrows = ('<button type="button" class="arrow left" aria-label="Précédent">‹</button>'
+              '<button type="button" class="arrow right" aria-label="Suivant">›</button>') if b.get("arrows", True) else ""
     return (
         f'<div class="block gallery" data-slideshow data-autoplay="1" data-speed="{speed}">'
-        f'<div class="slides">{slides}{arrows}</div>'
+        f'<div class="slides" style="aspect-ratio:{ar}">{slides}{arrows}</div>'
         f'<div class="dots">{dots}</div>'
         '</div>'
     )
@@ -216,6 +223,29 @@ def render_columns(b, prefix):
 
 BLOCK_RENDER = {"text": render_text, "image": render_image, "video": render_video,
                 "gallery": render_gallery, "columns": render_columns}
+
+
+def merge_media_runs(blocks):
+    """Regroupe les suites d'images/galeries adjacentes en un seul diaporama
+    (évite qu'une image isolée pende sous une galerie). Une image réellement
+    seule reste affichée en image simple (via render_gallery)."""
+    out = []
+    for b in blocks:
+        if b["type"] in ("image", "gallery"):
+            if b["type"] == "gallery":
+                imgs = list(b.get("images", []))
+                speed = b.get("speed") or 2.5
+            else:
+                imgs = [{"file": b.get("file"), "w": b.get("w", ""), "h": b.get("h", "")}]
+                speed = 2.5
+            if out and out[-1]["type"] == "gallery":
+                out[-1]["images"].extend(imgs)
+            else:
+                out.append({"type": "gallery", "layout": "slideshow", "autoplay": True,
+                            "speed": speed, "arrows": True, "images": imgs})
+        else:
+            out.append(dict(b))
+    return out
 
 
 # ---------------------------------------------------------------- build
@@ -292,7 +322,8 @@ def build():
     # --- pages projet (profondeur 2) ---
     for p in projects:
         pfx = "../../"
-        body_blocks = "".join(BLOCK_RENDER.get(b["type"], lambda b, pr: "")(b, pfx) for b in p.get("blocks", []))
+        blocks = merge_media_runs(p.get("blocks", []))
+        body_blocks = "".join(BLOCK_RENDER.get(b["type"], lambda b, pr: "")(b, pfx) for b in blocks)
         desc = re.sub(r"<[^>]+>", " ", next((b["html"] for b in p.get("blocks", []) if b["type"] == "text"), ""))
         desc = re.sub(r"\s+", " ", desc).strip()[:180]
         body = (

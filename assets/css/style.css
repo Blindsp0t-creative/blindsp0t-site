@@ -210,13 +210,16 @@ hr { background: var(--rule); border: 0; height: 1px; display: block; margin: 1.
 
 /* --------------------------------------------------------- Slideshow */
 .gallery { position: relative; width: 100%; user-select: none; }
+/* Conteneur à hauteur constante (aspect-ratio défini en inline sur .slides
+   selon la 1re image) : les diapos ne changent plus la hauteur de la page. */
 .gallery .slides { position: relative; width: 100%; overflow: hidden; }
 .gallery .slide {
+  position: absolute;
+  inset: 0;
   display: none;
-  width: 100%;
 }
 .gallery .slide.active { display: block; }
-.gallery .slide img { width: 100%; height: auto; }
+.gallery .slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .gallery .cap {
   margin-top: 1.2rem;
   font-size: 1.1rem;
