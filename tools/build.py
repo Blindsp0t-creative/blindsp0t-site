@@ -151,7 +151,6 @@ def page_shell(site, title, body, prefix="", active="", desc=""):
 <link rel="stylesheet" href="{prefix}assets/css/style.css?v={ASSET_VER}">
 </head>
 <body>
-{nav(prefix, active)}
 {body}
 {footer(site, prefix)}
 <script src="{prefix}assets/js/app.js?v={ASSET_VER}" defer></script>
@@ -264,6 +263,7 @@ def build():
         '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">'
         '<path d="M12 4 V20 M5 13 L12 20 L19 13" stroke="currentColor" stroke-width="1.6" '
         'stroke-linecap="round" stroke-linejoin="round"/></svg></a>'
+        f'{nav("", "projects")}'
         f'{grid("")}'
     )
     (OUT / "index.html").write_text(
@@ -272,7 +272,7 @@ def build():
     # --- /projects/ ---
     (OUT / "projects").mkdir()
     (OUT / "projects" / "index.html").write_text(
-        page_shell(site, "Projects", grid("../"), prefix="../", active="projects"), encoding="utf-8")
+        page_shell(site, "Projects", nav("../", "projects") + grid("../"), prefix="../", active="projects"), encoding="utf-8")
 
     # --- pages projet (profondeur 2) ---
     for p in projects:
@@ -281,6 +281,7 @@ def build():
         desc = re.sub(r"<[^>]+>", " ", next((b["html"] for b in p.get("blocks", []) if b["type"] == "text"), ""))
         desc = re.sub(r"\s+", " ", desc).strip()[:180]
         body = (
+            f'{nav(pfx, "")}'
             '<main class="page">'
             f'<h1 class="project-title">{esc(p["title"])}</h1>'
             f'{body_blocks}'
@@ -294,21 +295,21 @@ def build():
 
     # --- About (profondeur 1) ---
     fm, md = load_md(CONTENT / "pages" / "about.md")
-    body = f'<main class="page"><h1 class="project-title">{esc(fm.get("title","About"))}</h1><div class="prose">{mini_markdown(md)}</div></main>'
+    body = f'{nav("../","about")}<main class="page"><h1 class="project-title">{esc(fm.get("title","About"))}</h1><div class="prose">{mini_markdown(md)}</div></main>'
     (OUT / "about").mkdir()
     (OUT / "about" / "index.html").write_text(
         page_shell(site, "About", body, prefix="../", active="about"), encoding="utf-8")
 
     # --- Confidentialité (profondeur 1) ---
     fm, md = load_md(CONTENT / "pages" / "privacy.md")
-    body = f'<main class="page"><div class="prose">{mini_markdown(md)}</div></main>'
+    body = f'{nav("../","")}<main class="page"><div class="prose">{mini_markdown(md)}</div></main>'
     d = OUT / "engagement-confidentialite"; d.mkdir()
     (d / "index.html").write_text(page_shell(site, fm.get("title", "Confidentialité"), body, prefix="../"), encoding="utf-8")
 
     # --- Contact (profondeur 1) ---
     (OUT / "contact").mkdir()
     (OUT / "contact" / "index.html").write_text(
-        page_shell(site, "Contact", contact_body(site, "../"), prefix="../", active="contact"), encoding="utf-8")
+        page_shell(site, "Contact", nav("../", "contact") + contact_body(site, "../"), prefix="../", active="contact"), encoding="utf-8")
 
     # --- sitemap ---
     urls = ["/", "/about/", "/contact/", "/projects/"] + [f"/project/{p['slug']}/" for p in projects]
