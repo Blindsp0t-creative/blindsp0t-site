@@ -98,11 +98,16 @@ def mini_markdown(text):
 def nav(prefix, active=""):
     def cls(n):
         return ' class="active"' if n == active else ""
+    home = prefix or "./"
     return (
         '<nav class="topnav">'
+        f'<a class="nav-logo" href="{home}" aria-label="BlindSp0t — accueil">'
+        f'<img src="{prefix}assets/brand/logo_white.png" alt="BlindSp0t"></a>'
+        '<div class="nav-links">'
         f'<a href="{prefix}#projects"{cls("projects")}>Projects</a>'
         f'<a href="{prefix}about/"{cls("about")}>About</a>'
         f'<a href="{prefix}contact/"{cls("contact")}>Contact</a>'
+        '</div>'
         '</nav>'
     )
 
