@@ -4,6 +4,11 @@ Générateur de site statique BlindSp0t.
 Lit  content/ (site.yml, projects/*.md, pages/*.md) + assets/
 Écrit _site/  (prêt pour GitHub Pages).
 
+Les liens et les ressources utilisent des chemins RELATIFS, calculés selon la
+profondeur de chaque page : le site fonctionne donc partout — domaine racine
+(blindsp0t.com), URL de projet GitHub Pages (…github.io/blindsp0t-site/) et
+prévisualisation locale.
+
 Usage : tools/.venv/bin/python tools/build.py
 """
 import glob, html, re, shutil
@@ -15,6 +20,7 @@ CONTENT = ROOT / "content"
 ASSETS = ROOT / "assets"
 OUT = ROOT / "_site"
 
+
 # --------------------------------------------------------------- utils
 
 def load_md(path):
@@ -25,17 +31,28 @@ def load_md(path):
     return (yaml.safe_load(m.group(1)) or {}), m.group(2)
 
 
-def asset(p):
-    """Normalise un chemin d'image vers une URL absolue.
+def prefix_for(depth):
+    """Préfixe relatif vers la racine du site selon la profondeur de la page."""
+    return "../" * depth if depth else ""
+
+
+def asset(p, prefix=""):
+    """Normalise un chemin d'image vers une URL relative à la page courante.
     Accepte 'images/slug/x', 'assets/images/...', '/assets/...' ou une URL http."""
     p = (p or "").strip()
     if not p:
         return ""
-    if p.startswith("http://") or p.startswith("https://") or p.startswith("/"):
+    if p.startswith("http://") or p.startswith("https://"):
         return p
-    if p.startswith("assets/"):
-        return "/" + p
-    return "/assets/" + p
+    if p.startswith("/assets/"):
+        rel = p[1:]                      # 'assets/...'
+    elif p.startswith("assets/"):
+        rel = p
+    elif p.startswith("/"):
+        rel = p[1:]
+    else:
+        rel = "assets/" + p              # 'images/slug/x' -> 'assets/images/slug/x'
+    return prefix + rel
 
 
 def esc(s):
@@ -76,14 +93,14 @@ def mini_markdown(text):
 
 # ------------------------------------------------------------ templates
 
-def nav(active=""):
+def nav(prefix, active=""):
     def cls(n):
         return ' class="active"' if n == active else ""
     return (
         '<nav class="topnav">'
-        f'<a href="/#projects"{cls("projects")}>Projects</a>'
-        f'<a href="/about/"{cls("about")}>About</a>'
-        f'<a href="/contact/"{cls("contact")}>Contact</a>'
+        f'<a href="{prefix}#projects"{cls("projects")}>Projects</a>'
+        f'<a href="{prefix}about/"{cls("about")}>About</a>'
+        f'<a href="{prefix}contact/"{cls("contact")}>Contact</a>'
         '</nav>'
     )
 
@@ -95,9 +112,13 @@ def _iter_socials(site):
     return [(x.get("label", ""), x.get("url", "")) for x in s]
 
 
-def footer(site):
+def _social_href(v, prefix):
+    return prefix + "contact/" if v == "contact-form" else v
+
+
+def footer(site, prefix):
     socials = "".join(
-        f'<a href="{esc(_social_href(v))}"{"" if v=="contact-form" else " target=_blank rel=noopener"}>{esc(k)}</a>'
+        f'<a href="{esc(_social_href(v, prefix))}"{"" if v=="contact-form" else " target=_blank rel=noopener"}>{esc(k)}</a>'
         for k, v in _iter_socials(site)
     )
     return (
@@ -108,11 +129,7 @@ def footer(site):
     )
 
 
-def _social_href(v):
-    return "/contact/" if v == "contact-form" else v
-
-
-def page_shell(site, title, body, active="", desc=""):
+def page_shell(site, title, body, prefix="", active="", desc=""):
     dtitle = f"{title} — {site['title']}" if title and title != site["title"] else site["title"]
     return f"""<!doctype html>
 <html lang="fr">
@@ -125,17 +142,17 @@ def page_shell(site, title, body, active="", desc=""):
 <meta property="og:title" content="{esc(dtitle)}">
 <meta property="og:description" content="{esc(desc or site.get('description',''))}">
 <meta property="og:type" content="website">
-<link rel="shortcut icon" href="/assets/brand/favicon.ico">
+<link rel="shortcut icon" href="{prefix}assets/brand/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="{prefix}assets/css/style.css">
 </head>
 <body>
-{nav(active)}
+{nav(prefix, active)}
 {body}
-{footer(site)}
-<script src="/assets/js/app.js" defer></script>
+{footer(site, prefix)}
+<script src="{prefix}assets/js/app.js" defer></script>
 </body>
 </html>
 """
@@ -143,28 +160,28 @@ def page_shell(site, title, body, active="", desc=""):
 
 # --------------------------------------------------------------- blocks
 
-def render_text(b):
+def render_text(b, prefix):
     return f'<div class="block text">{b.get("html","")}</div>'
 
 
-def render_image(b):
-    src = esc(asset(b["file"]))
+def render_image(b, prefix):
+    src = esc(asset(b["file"], prefix))
     return f'<div class="block image"><img loading="lazy" src="{src}" alt=""></div>'
 
 
-def render_video(b):
+def render_video(b, prefix):
     src = esc(b.get("src", ""))
     return f'<div class="block video"><div class="frame"><iframe src="{src}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>'
 
 
-def render_gallery(b):
+def render_gallery(b, prefix):
     imgs = b.get("images", [])
     if not imgs:
         return ""
     layout = (b.get("layout") or "").lower()
     if layout == "slideshow" and len(imgs) > 1:
         slides = "".join(
-            f'<div class="slide{" active" if k==0 else ""}"><img loading="lazy" src="{esc(asset(im["file"]))}" alt=""></div>'
+            f'<div class="slide{" active" if k==0 else ""}"><img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt=""></div>'
             for k, im in enumerate(imgs)
         )
         dots = "".join(f'<span class="dot{" active" if k==0 else ""}"></span>' for k in range(len(imgs)))
@@ -177,9 +194,8 @@ def render_gallery(b):
             f'<div class="dots">{dots}</div>'
             '</div>'
         )
-    # freeform / columns / gallery -> grille
     cls = "gallery-grid cols-1" if len(imgs) == 1 else "gallery-grid"
-    cells = "".join(f'<img loading="lazy" src="{esc(asset(im["file"]))}" alt="">' for im in imgs)
+    cells = "".join(f'<img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt="">' for im in imgs)
     return f'<div class="block"><div class="{cls}">{cells}</div></div>'
 
 
@@ -197,60 +213,58 @@ def build():
         projects.append(fm)
     projects.sort(key=lambda p: p.get("order", 999))
 
-    # --- clean output ---
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir(parents=True)
 
-    # --- assets ---
     shutil.copytree(ASSETS, OUT / "assets")
-
-    # --- interface d'admin (CMS web) ---
     admin_src = ROOT / "admin"
     if admin_src.exists():
         shutil.copytree(admin_src, OUT / "admin")
 
-    # --- CNAME + robots + nojekyll ---
     domain = (site.get("domain") or "").replace("https://", "").replace("http://", "").strip("/")
     if domain:
         (OUT / "CNAME").write_text(domain + "\n")
     (OUT / ".nojekyll").write_text("")
     (OUT / "robots.txt").write_text("User-agent: *\nAllow: /\n")
 
-    # --- thumbnails grid (partagé accueil + /projects) ---
-    def thumb(p):
-        tags = "".join(f"<span>{esc(t)}</span>" for t in (p.get("tags") or []))
-        cover = esc(asset(p.get("cover"))) if p.get("cover") else ""
-        img = (f'<img class="cover-img" loading="lazy" src="{cover}" alt="">'
-               if cover else '<div class="cover-img"></div>')
-        return (
-            '<div class="thumb">'
-            f'<a class="cover" href="/project/{esc(p["slug"])}/">{img}</a>'
-            f'<div class="title"><a href="/project/{esc(p["slug"])}/">{esc(p["title"])}</a></div>'
-            f'<div class="tags">{tags}</div>'
-            '</div>'
-        )
-    grid = '<div class="thumbs-wrap"><div class="thumbs" id="projects">' + \
-           "".join(thumb(p) for p in projects) + "</div></div>"
+    # --- grille de vignettes (accueil : prefix "" ; page projects : prefix "../") ---
+    def grid(prefix):
+        def thumb(p):
+            tags = "".join(f"<span>{esc(t)}</span>" for t in (p.get("tags") or []))
+            cover = esc(asset(p.get("cover"), prefix)) if p.get("cover") else ""
+            img = (f'<img class="cover-img" loading="lazy" src="{cover}" alt="">'
+                   if cover else '<div class="cover-img"></div>')
+            link = f'{prefix}project/{esc(p["slug"])}/'
+            return (
+                '<div class="thumb">'
+                f'<a class="cover" href="{link}">{img}</a>'
+                f'<div class="title"><a href="{link}">{esc(p["title"])}</a></div>'
+                f'<div class="tags">{tags}</div>'
+                '</div>'
+            )
+        return ('<div class="thumbs-wrap"><div class="thumbs" id="projects">'
+                + "".join(thumb(p) for p in projects) + "</div></div>")
 
-    # --- accueil : splash + hero + grille ---
-    logo = "/assets/brand/logo_white.png"
+    # --- accueil ---
+    logo = "assets/brand/logo_white.png"
     home_body = (
         f'<div id="splash"><img src="{logo}" alt="BlindSp0t"></div>'
         f'<header class="hero"><img src="{logo}" alt="BlindSp0t"></header>'
-        f'{grid}'
+        f'{grid("")}'
     )
-    (OUT / "index.html").write_text(page_shell(site, site["title"], home_body, active="projects"),
-                                    encoding="utf-8")
+    (OUT / "index.html").write_text(
+        page_shell(site, site["title"], home_body, prefix="", active="projects"), encoding="utf-8")
 
-    # --- page /projects/ (grille seule) ---
+    # --- /projects/ ---
     (OUT / "projects").mkdir()
     (OUT / "projects" / "index.html").write_text(
-        page_shell(site, "Projects", grid, active="projects"), encoding="utf-8")
+        page_shell(site, "Projects", grid("../"), prefix="../", active="projects"), encoding="utf-8")
 
-    # --- pages projet ---
+    # --- pages projet (profondeur 2) ---
     for p in projects:
-        body_blocks = "".join(BLOCK_RENDER.get(b["type"], lambda b: "")(b) for b in p.get("blocks", []))
+        pfx = "../../"
+        body_blocks = "".join(BLOCK_RENDER.get(b["type"], lambda b, pr: "")(b, pfx) for b in p.get("blocks", []))
         desc = re.sub(r"<[^>]+>", " ", next((b["html"] for b in p.get("blocks", []) if b["type"] == "text"), ""))
         desc = re.sub(r"\s+", " ", desc).strip()[:180]
         body = (
@@ -258,29 +272,30 @@ def build():
             f'<h1 class="project-title">{esc(p["title"])}</h1>'
             f'{body_blocks}'
             '<hr>'
-            '<p><a href="/#projects" style="border-bottom:1px solid rgba(255,255,255,.4)">← Projects</a></p>'
+            f'<p><a href="{pfx}#projects" style="border-bottom:1px solid rgba(255,255,255,.4)">← Projects</a></p>'
             '</main>'
         )
         d = OUT / "project" / p["slug"]
         d.mkdir(parents=True)
-        (d / "index.html").write_text(page_shell(site, p["title"], body, desc=desc), encoding="utf-8")
+        (d / "index.html").write_text(page_shell(site, p["title"], body, prefix=pfx, desc=desc), encoding="utf-8")
 
-    # --- About ---
+    # --- About (profondeur 1) ---
     fm, md = load_md(CONTENT / "pages" / "about.md")
     body = f'<main class="page"><h1 class="project-title">{esc(fm.get("title","About"))}</h1><div class="prose">{mini_markdown(md)}</div></main>'
     (OUT / "about").mkdir()
-    (OUT / "about" / "index.html").write_text(page_shell(site, "About", body, active="about"), encoding="utf-8")
+    (OUT / "about" / "index.html").write_text(
+        page_shell(site, "About", body, prefix="../", active="about"), encoding="utf-8")
 
-    # --- Privacy ---
+    # --- Confidentialité (profondeur 1) ---
     fm, md = load_md(CONTENT / "pages" / "privacy.md")
     body = f'<main class="page"><div class="prose">{mini_markdown(md)}</div></main>'
     d = OUT / "engagement-confidentialite"; d.mkdir()
-    (d / "index.html").write_text(page_shell(site, fm.get("title", "Confidentialité"), body), encoding="utf-8")
+    (d / "index.html").write_text(page_shell(site, fm.get("title", "Confidentialité"), body, prefix="../"), encoding="utf-8")
 
-    # --- Contact (Formspree) ---
+    # --- Contact (profondeur 1) ---
     (OUT / "contact").mkdir()
     (OUT / "contact" / "index.html").write_text(
-        page_shell(site, "Contact", contact_body(site), active="contact"), encoding="utf-8")
+        page_shell(site, "Contact", contact_body(site, "../"), prefix="../", active="contact"), encoding="utf-8")
 
     # --- sitemap ---
     urls = ["/", "/about/", "/contact/", "/projects/"] + [f"/project/{p['slug']}/" for p in projects]
@@ -292,7 +307,7 @@ def build():
     print(f"✓ Build OK : {len(projects)} projets → {OUT}")
 
 
-def contact_body(site):
+def contact_body(site, prefix):
     fid = (site.get("formspree_id") or "").strip()
     email = site.get("contact_email", "")
     if fid:
