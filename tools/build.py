@@ -131,14 +131,15 @@ def footer(site, prefix):
     )
 
 
-def page_shell(site, title, body, prefix="", active="", desc=""):
+def page_shell(site, title, body, prefix="", active="", desc="", noindex=False):
     dtitle = f"{title} — {site['title']}" if title and title != site["title"] else site["title"]
+    robots = '<meta name="robots" content="noindex,nofollow">\n' if noindex else ""
     return f"""<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{esc(dtitle)}</title>
+{robots}<title>{esc(dtitle)}</title>
 <meta name="description" content="{esc(desc or site.get('description',''))}">
 <meta name="keywords" content="{esc(site.get('keywords',''))}">
 <meta property="og:title" content="{esc(dtitle)}">
@@ -304,7 +305,7 @@ def build():
     fm, md = load_md(CONTENT / "pages" / "privacy.md")
     body = f'{nav("../","")}<main class="page"><div class="prose">{mini_markdown(md)}</div></main>'
     d = OUT / "engagement-confidentialite"; d.mkdir()
-    (d / "index.html").write_text(page_shell(site, fm.get("title", "Confidentialité"), body, prefix="../"), encoding="utf-8")
+    (d / "index.html").write_text(page_shell(site, fm.get("title", "Confidentialité"), body, prefix="../", noindex=True), encoding="utf-8")
 
     # --- Contact (profondeur 1) ---
     (OUT / "contact").mkdir()
