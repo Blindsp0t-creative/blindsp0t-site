@@ -22,7 +22,8 @@ assets/
   images/<slug>/…          images des projets (pleine résolution optimisée)
   brand/                   logo + favicon
   css/style.css            reproduction fidèle du thème d'origine
-  js/app.js                splash d'intro + diaporamas
+  js/app.js                flèche de scroll + diaporamas
+  assets/logo-anim/        logo animé p5.js (hero de l'accueil)
 admin/                     CMS web (Decap)
 tools/
   scrape.py                import initial depuis Cargo (déjà exécuté)
@@ -43,16 +44,20 @@ cover: images/Mon-Projet/photo1.jpg
 blocks:
   - type: text
     html: "Description du projet…"
-  - type: gallery
-    layout: slideshow      # slideshow | freeform | columns
-    autoplay: true
-    speed: 2.5
+  - type: columns          # 2 colonnes (ex. crédits FR / EN)
+    columns: ["Texte FR…", "Texte EN…"]
+  - type: gallery          # toute galerie multi-images est rendue en diaporama
     images:
       - { file: images/Mon-Projet/photo1.jpg }
+      - { file: images/Mon-Projet/photo2.jpg }
+  - type: image            # image seule ; si adjacente à une galerie, fusionnée dans le diaporama
+    file: images/Mon-Projet/affiche.jpg
   - type: video
     src: https://player.vimeo.com/video/123456
 ---
 ```
+> Les galeries s'affichent toujours en **diaporama autoplay** (hauteur constante) ; les images
+> voisines d'une galerie sont regroupées dans le même diaporama.
 
 ---
 
