@@ -316,6 +316,13 @@ hr { background: var(--rule); border: 0; height: 1px; display: block; margin: 1.
   .topnav { padding: 1.2rem 6%; gap: 0.9rem; }
   .hero img, #splash img { width: 78vw; }
 }
+/* Nav compacte sur téléphone : logo + 3 items doivent tenir sur une ligne */
+@media (max-width: 480px) {
+  .topnav { padding: 1.1rem 4%; gap: 0.7rem; font-size: 0.95rem; }
+  .nav-links { gap: 0.8rem; }
+  .topnav a { letter-spacing: 0; }
+  .nav-logo img { height: 1.2rem; }
+}
 @media (max-width: 400px) {
   .thumbs { grid-template-columns: 1fr; }
 }
