@@ -49,6 +49,15 @@ collections:
             summary: "Texte : {{fields.html}}"
             fields:
               - { label: Texte, name: html, widget: markdown }
+          - label: "Colonnes (FR / EN)"
+            name: columns
+            widget: object
+            summary: "Colonnes : {{fields.columns}}"
+            fields:
+              - label: Colonnes
+                name: columns
+                widget: list
+                field: { label: Colonne, name: col, widget: markdown }
           - label: Image
             name: image
             widget: object
