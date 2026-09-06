@@ -9,5 +9,86 @@
 <body>
   <!-- Interface d'édition Decap CMS -->
   <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.6.4/dist/decap-cms.js"></script>
+
+  <!-- Gabarit de prévisualisation d'un projet (panneau de droite).
+       Reproduit la mise en page du site : titre, couverture, blocs texte,
+       colonnes FR/EN côte à côte, galeries, vidéos. -->
+  <script>
+  (function () {
+    var CMS = window.CMS;
+    var h = window.h || (CMS && CMS.h);
+    var createClass = window.createClass || (CMS && CMS.createClass);
+    if (!CMS || !h || !createClass) {
+      console.warn('[preview] API Decap indisponible — gabarit non enregistré');
+      return;
+    }
+
+    function html(s) { return { __html: s || '' }; }
+
+    var ProjectPreview = createClass({
+      render: function () {
+        var props = this.props;
+        var data = props.entry.get('data');
+        var getAsset = props.getAsset;
+        var kids = [];
+
+        var title = data.get('title');
+        if (title) kids.push(h('h1', { key: 'title', className: 'bp-title' }, title));
+
+        var cover = data.get('cover');
+        if (cover) kids.push(h('img', { key: 'cover', className: 'bp-cover', src: getAsset(cover) }));
+
+        var blocks = data.get('blocks');
+        if (blocks) blocks.forEach(function (b, i) {
+          var type = b.get('type');
+          var key = 'b' + i;
+          if (type === 'text') {
+            kids.push(h('div', { key: key, className: 'bp-block bp-text',
+              dangerouslySetInnerHTML: html(b.get('html')) }));
+          } else if (type === 'columns') {
+            kids.push(h('div', { key: key, className: 'bp-block bp-columns' },
+              h('div', { className: 'bp-col', dangerouslySetInnerHTML: html(b.get('fr')) }),
+              h('div', { className: 'bp-col', dangerouslySetInnerHTML: html(b.get('en')) })
+            ));
+          } else if (type === 'image') {
+            var f = b.get('file');
+            if (f) kids.push(h('img', { key: key, className: 'bp-block bp-img', src: getAsset(f) }));
+          } else if (type === 'gallery') {
+            var imgs = b.get('images');
+            var gk = [];
+            if (imgs) imgs.forEach(function (im, j) {
+              var ff = im.get('file');
+              if (ff) gk.push(h('img', { key: j, className: 'bp-gimg', src: getAsset(ff) }));
+            });
+            if (gk.length) kids.push(h('div', { key: key, className: 'bp-block bp-gallery' }, gk));
+          } else if (type === 'video') {
+            var src = b.get('src');
+            if (src) kids.push(h('div', { key: key, className: 'bp-block bp-video' },
+              h('iframe', { src: src, allowFullScreen: true, frameBorder: '0' })));
+          }
+        });
+
+        return h('div', { className: 'bp-preview' }, kids);
+      }
+    });
+
+    CMS.registerPreviewTemplate('projects', ProjectPreview);
+
+    CMS.registerPreviewStyle([
+      '.bp-preview{font-family:Georgia,\"Times New Roman\",serif;max-width:860px;margin:0 auto;padding:28px 24px;color:#111;line-height:1.5;}',
+      '.bp-title{font-size:2.1rem;font-weight:700;margin:0 0 1.2rem;}',
+      '.bp-cover{display:block;width:100%;height:auto;margin:0 0 1.6rem;}',
+      '.bp-block{margin:0 0 1.6rem;}',
+      '.bp-columns{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}',
+      '.bp-col a{color:#0645ad;}',
+      '.bp-img{width:100%;height:auto;}',
+      '.bp-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;}',
+      '.bp-gimg{width:100%;height:auto;display:block;}',
+      '.bp-video{position:relative;padding-top:56.25%;}',
+      '.bp-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}',
+      '@media(max-width:600px){.bp-columns{grid-template-columns:1fr;}}'
+    ].join('\n'), { raw: true });
+  })();
+  </script>
 </body>
 </html>
