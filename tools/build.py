@@ -214,7 +214,13 @@ def render_gallery(b, prefix):
 
 
 def render_columns(b, prefix):
-    cols = b.get("columns", [])
+    # Nouveau format : deux champs nommés fr / en (côte à côte).
+    # Ancien format (compat) : liste `columns: [FR, EN]`.
+    if "fr" in b or "en" in b:
+        cols = [b.get("fr", ""), b.get("en", "")]
+    else:
+        cols = b.get("columns", [])
+    cols = [c for c in cols if (c or "").strip()]
     if not cols:
         return ""
     cells = "".join(f'<div class="col">{c}</div>' for c in cols)

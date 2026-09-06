@@ -49,15 +49,13 @@ collections:
             summary: "Texte : {{fields.html}}"
             fields:
               - { label: Texte, name: html, widget: markdown }
-          - label: "Colonnes (FR / EN)"
+          - label: "Colonnes bilingues (FR + EN côte à côte)"
             name: columns
             widget: object
-            summary: "Colonnes : {{fields.columns}}"
+            summary: "Colonnes FR/EN : {{fields.fr}}"
             fields:
-              - label: Colonnes
-                name: columns
-                widget: list
-                field: { label: Colonne, name: col, widget: markdown }
+              - { label: "Colonne FR (français)", name: fr, widget: markdown }
+              - { label: "Colonne EN (anglais)", name: en, widget: markdown }
           - label: Image
             name: image
             widget: object
