@@ -11,8 +11,12 @@
   <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.6.4/dist/decap-cms.js"></script>
 
   <!-- Gabarit de prévisualisation d'un projet (panneau de droite).
-       Reproduit la mise en page du site : titre, couverture, blocs texte,
-       colonnes FR/EN côte à côte, galeries, vidéos. -->
+       Reproduit la mise en page ET la charte du site : fond noir, IBM Plex Mono,
+       titre, couverture, colonnes FR/EN côte à côte (5/2/5), galeries, vidéos.
+       Les images sont chargées depuis la vraie URL publiée du site (calculée à
+       partir de l'URL de l'admin, sous-chemin /blindsp0t-site/ compris sur
+       github.io, racine sur le domaine final) : le backend GitHub de Decap ne
+       sait pas résoudre ces médias sous un sous-chemin, d'où l'affichage direct. -->
   <script>
   (function () {
     var CMS = window.CMS;
@@ -23,7 +27,41 @@
       return;
     }
 
+    // Racine publiée du site = origine + chemin avant "/admin".
+    // github.io  → https://blindsp0t-creative.github.io/blindsp0t-site
+    // apex       → https://blindsp0t.com
+    var SITE_BASE = window.location.origin +
+      window.location.pathname.split('/admin')[0];
+
+    // Normalise un chemin d'image stocké → URL absolue vers le site publié.
+    // Accepte '/assets/...', 'assets/...', 'images/slug/x' ou une URL http.
+    function assetUrl(p) {
+      p = (p || '').trim();
+      if (!p) return '';
+      if (/^https?:\/\//.test(p)) return p;
+      var rel;
+      if (p.indexOf('/assets/') === 0) rel = p.slice(1);
+      else if (p.indexOf('assets/') === 0) rel = p;
+      else if (p.charAt(0) === '/') rel = p.slice(1);
+      else rel = 'assets/' + p;              // 'images/slug/x' -> 'assets/images/slug/x'
+      return SITE_BASE + '/' + rel;
+    }
+
     function html(s) { return { __html: s || '' }; }
+
+    // <img> qui charge depuis le site publié, avec repli sur getAsset
+    // (utile pour une image tout juste téléversée, pas encore publiée).
+    function img(key, cls, path, getAsset) {
+      return h('img', {
+        key: key, className: cls, src: assetUrl(path),
+        onError: function (e) {
+          var t = e.target;
+          if (t.dataset.fallback) return;    // évite toute boucle
+          t.dataset.fallback = '1';
+          try { var a = getAsset(path); if (a) t.src = a.toString(); } catch (_) {}
+        }
+      });
+    }
 
     var ProjectPreview = createClass({
       render: function () {
@@ -36,7 +74,7 @@
         if (title) kids.push(h('h1', { key: 'title', className: 'bp-title' }, title));
 
         var cover = data.get('cover');
-        if (cover) kids.push(h('img', { key: 'cover', className: 'bp-cover', src: getAsset(cover) }));
+        if (cover) kids.push(img('cover', 'bp-cover', cover, getAsset));
 
         var blocks = data.get('blocks');
         if (blocks) blocks.forEach(function (b, i) {
@@ -52,13 +90,13 @@
             ));
           } else if (type === 'image') {
             var f = b.get('file');
-            if (f) kids.push(h('img', { key: key, className: 'bp-block bp-img', src: getAsset(f) }));
+            if (f) kids.push(img(key, 'bp-block bp-img', f, getAsset));
           } else if (type === 'gallery') {
             var imgs = b.get('images');
             var gk = [];
             if (imgs) imgs.forEach(function (im, j) {
               var ff = im.get('file');
-              if (ff) gk.push(h('img', { key: j, className: 'bp-gimg', src: getAsset(ff) }));
+              if (ff) gk.push(img(j, 'bp-gimg', ff, getAsset));
             });
             if (gk.length) kids.push(h('div', { key: key, className: 'bp-block bp-gallery' }, gk));
           } else if (type === 'video') {
@@ -74,19 +112,29 @@
 
     CMS.registerPreviewTemplate('projects', ProjectPreview);
 
+    // Mêmes polices que le site.
+    CMS.registerPreviewStyle('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rubik:wght@400;700&display=swap');
+
+    // Charte du site : fond noir, texte blanc, monospace, colonnes 5/2/5.
+    var MONO = '"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace';
     CMS.registerPreviewStyle([
-      '.bp-preview{font-family:Georgia,\"Times New Roman\",serif;max-width:860px;margin:0 auto;padding:28px 24px;color:#111;line-height:1.5;}',
-      '.bp-title{font-size:2.1rem;font-weight:700;margin:0 0 1.2rem;}',
-      '.bp-cover{display:block;width:100%;height:auto;margin:0 0 1.6rem;}',
-      '.bp-block{margin:0 0 1.6rem;}',
-      '.bp-columns{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}',
-      '.bp-col a{color:#0645ad;}',
+      'html{font-size:90.63%;}',
+      'body{margin:0;background:#000;color:#fff;font-family:' + MONO + ';font-size:1.1rem;line-height:1.3;-webkit-font-smoothing:antialiased;}',
+      '.bp-preview{max-width:960px;margin:0 auto;padding:2.4rem 1.8rem 4rem;}',
+      '.bp-title{font-family:' + MONO + ';font-weight:400;font-size:2.4rem;line-height:1.1;margin:0 0 1.6rem;}',
+      '.bp-cover{display:block;width:100%;height:auto;margin:0 0 1.8rem;}',
+      '.bp-block{margin:0 0 1.8rem;}',
+      '.bp-columns{display:grid;grid-template-columns:5fr 2fr 5fr;column-gap:0;}',
+      '.bp-columns .bp-col:nth-child(1){grid-column:1;}',
+      '.bp-columns .bp-col:nth-child(2){grid-column:3;}',
+      '.bp-col a{color:#fff;border-bottom:1px solid rgba(255,255,255,0.4);}',
       '.bp-img{width:100%;height:auto;}',
       '.bp-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;}',
       '.bp-gimg{width:100%;height:auto;display:block;}',
       '.bp-video{position:relative;padding-top:56.25%;}',
       '.bp-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}',
-      '@media(max-width:600px){.bp-columns{grid-template-columns:1fr;}}'
+      'img{max-width:100%;}',
+      '@media(max-width:640px){.bp-columns{grid-template-columns:1fr;}.bp-columns .bp-col{grid-column:1;}}'
     ].join('\n'), { raw: true });
   })();
   </script>
