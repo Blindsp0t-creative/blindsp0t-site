@@ -8,22 +8,21 @@ tags:
 - nao
 - interactive
 - live
-cover: images/School-of-Moon-Cie-Shonen-Eric-Castaing/d96e8fd1_Blindsp0t_schoolOfMoon_Manchester2.jpg
+cover: /assets/images/School-of-Moon-Cie-Shonen-Eric-Castaing/d96e8fd1_Blindsp0t_schoolOfMoon_Manchester2.jpg
 blocks:
 - type: columns
-  columns:
-  - Collaboration avec la compagnie <a href="http://www.shonen.info/">Shonen</a>, du chorégraphe <a href="https://www.ballet-de-marseille.com/en/collaborations/associate-artist/eric-minh-cuong-castaing-65">Eric Minh Cuong Castaing</a> aux représentations de la piece School Of Moon. (Régie robotique)
-  - A collaboration with the company <a href="http://www.shonen.info/">Shonen</a>, from choreographer <a href="https://www.ballet-de-marseille.com/en/collaborations/associate-artist/eric-minh-cuong-castaing-65">Eric Minh Cuong Castaing</a> to performances of School Of Moon. (Robots management)
+  fr: Collaboration avec la compagnie <a href="http://www.shonen.info/">Shonen</a>, du chorégraphe <a href="https://www.ballet-de-marseille.com/en/collaborations/associate-artist/eric-minh-cuong-castaing-65">Eric Minh Cuong Castaing</a> aux représentations de la piece School Of Moon. (Régie robotique)
+  en: A collaboration with the company <a href="http://www.shonen.info/">Shonen</a>, from choreographer <a href="https://www.ballet-de-marseille.com/en/collaborations/associate-artist/eric-minh-cuong-castaing-65">Eric Minh Cuong Castaing</a> to performances of School Of Moon. (Robots management)
 - type: video
   src: https://player.vimeo.com/video/150567383
   w: '960'
   h: '540'
 - type: image
-  file: images/School-of-Moon-Cie-Shonen-Eric-Castaing/d96e8fd1_Blindsp0t_schoolOfMoon_Manchester2.jpg
+  file: /assets/images/School-of-Moon-Cie-Shonen-Eric-Castaing/d96e8fd1_Blindsp0t_schoolOfMoon_Manchester2.jpg
   w: '4032'
   h: '3024'
 - type: image
-  file: images/School-of-Moon-Cie-Shonen-Eric-Castaing/b48d6335_Blindsp0t_schoolOfMoon_Manchester3.jpg
+  file: /assets/images/School-of-Moon-Cie-Shonen-Eric-Castaing/b48d6335_Blindsp0t_schoolOfMoon_Manchester3.jpg
   w: '4032'
   h: '3024'
 ---

@@ -5,11 +5,10 @@ order: 2
 tags:
 - Volumetric capture
 - Multi-display installation
-cover: images/Girl-Friend-Experience/27e397bf_GFE_20241107-P1211482Dark-Euphoria_Celine-Delatte-1-1920x1081.jpg
+cover: /assets/images/Girl-Friend-Experience/27e397bf_GFE_20241107-P1211482Dark-Euphoria_Celine-Delatte-1-1920x1081.jpg
 blocks:
 - type: columns
-  columns:
-  - 'Réalisateur | Ugo Arsac<br>
+  fr: 'Réalisateur | Ugo Arsac<br>
 
     <br>
 
@@ -40,7 +39,7 @@ blocks:
     Coproduction<br>
 
     avec Chroniques, Biennale des Imaginaires Numériques dans le cadre de la plateforme CHRONIQUES CRÉATIONS, soutenue par la DRAC Provence-Alpes-Côte d’Azur, la Région Sud Provence-Alpes-Côte d’Azur et la Ville de Marseille.'
-  - 'Director | Ugo Arsac<br>
+  en: 'Director | Ugo Arsac<br>
 
     <br>
 
@@ -79,25 +78,25 @@ blocks:
   captions: true
   transition: slide
   images:
-  - file: images/Girl-Friend-Experience/27e397bf_GFE_20241107-P1211482Dark-Euphoria_Celine-Delatte-1-1920x1081.jpg
+  - file: /assets/images/Girl-Friend-Experience/27e397bf_GFE_20241107-P1211482Dark-Euphoria_Celine-Delatte-1-1920x1081.jpg
     w: '1920'
     h: '1081'
-  - file: images/Girl-Friend-Experience/ea4fa6ce_GFE_visu7Ugo-Arsac.jpg
+  - file: /assets/images/Girl-Friend-Experience/ea4fa6ce_GFE_visu7Ugo-Arsac.jpg
     w: '1920'
     h: '1080'
-  - file: images/Girl-Friend-Experience/8f545700_GFE_20241107-P1211389Dark-Euphoria_Celine-Delatte-1920x1081.jpg
+  - file: /assets/images/Girl-Friend-Experience/8f545700_GFE_20241107-P1211389Dark-Euphoria_Celine-Delatte-1920x1081.jpg
     w: '1920'
     h: '1081'
-  - file: images/Girl-Friend-Experience/d30fbd55_GFE_visu1Ugo-Arsac.jpg
+  - file: /assets/images/Girl-Friend-Experience/d30fbd55_GFE_visu1Ugo-Arsac.jpg
     w: '1920'
     h: '1080'
-  - file: images/Girl-Friend-Experience/69f33502_GFE_visu6Ugo-Arsac.jpg
+  - file: /assets/images/Girl-Friend-Experience/69f33502_GFE_visu6Ugo-Arsac.jpg
     w: '1920'
     h: '1080'
-  - file: images/Girl-Friend-Experience/625728e1_GFE_visu5Ugo-Arsac.jpg
+  - file: /assets/images/Girl-Friend-Experience/625728e1_GFE_visu5Ugo-Arsac.jpg
     w: '1920'
     h: '1080'
-  - file: images/Girl-Friend-Experience/9a36fb6f_GFE_screenshotsDark-Euphoria_Celine-Delatte1Dark-Euphoria_Celine-Delatte-1-1.jpg
+  - file: /assets/images/Girl-Friend-Experience/9a36fb6f_GFE_screenshotsDark-Euphoria_Celine-Delatte1Dark-Euphoria_Celine-Delatte-1-1.jpg
     w: '1920'
     h: '1080'
 ---

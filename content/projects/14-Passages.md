@@ -8,14 +8,13 @@ tags:
 - interactive
 - mouvement
 - kinect
-cover: images/Passages/206fc55a_passages_blindsp0t.png
+cover: /assets/images/Passages/206fc55a_passages_blindsp0t.png
 blocks:
 - type: columns
-  columns:
-  - '<strong>Passages</strong> est une série d’expérimentations sur la captation du mouvement dansé basées sur l’utilisation de la Kinect et de l’outil DepthKit. <br>
+  fr: '<strong>Passages</strong> est une série d’expérimentations sur la captation du mouvement dansé basées sur l’utilisation de la Kinect et de l’outil DepthKit. <br>
 
     <br>Danse : Severine Second (écriture et interprétation).'
-  - '<strong>Passages</strong> is a series of experiments. Dance has been filmed with a Kinect, and processed with DepthKit.<br><br>Dance: Severine Second (writing and performing).'
+  en: '<strong>Passages</strong> is a series of experiments. Dance has been filmed with a Kinect, and processed with DepthKit.<br><br>Dance: Severine Second (writing and performing).'
 - type: video
   src: https://player.vimeo.com/video/451192838
   w: '960'
