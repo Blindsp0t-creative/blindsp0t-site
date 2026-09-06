@@ -1,0 +1,20 @@
+# Redirections supplémentaires (en plus des 29 projets, générées automatiquement).
+#
+# Les anciennes URLs Cargo des projets — https://blindsp0t.com/<slug> — sont déjà
+# redirigées automatiquement vers /project/<slug>/ par build.py. Ce fichier ne sert
+# QUE pour les URLs héritées supplémentaires : ancienne page About, page renommée,
+# slug modifié, etc.
+#
+# Format :  "ancien-chemin": "/nouveau-chemin/"
+#   - l'ancien chemin est SANS domaine ni slash initial
+#   - le nouveau chemin commence par / (chemin absolu sur le site)
+#
+# NOTE (build local sur macOS) : le système de fichiers Mac est insensible à la casse,
+# donc "About" et "about" y désignent le même dossier. build.py refuse alors d'écraser
+# la vraie page et affiche « redirection ignorée (collision) » — c'est normal.
+# La redirection est bien générée en production (GitHub Actions tourne sous Linux,
+# sensible à la casse).
+
+# Anciennes pages Cargo (casse différente du nouveau site) — vérifiées en ligne :
+"About": "/about/"
+"Projects": "/projects/"

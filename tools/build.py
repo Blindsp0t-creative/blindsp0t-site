@@ -99,6 +99,25 @@ def person_ld(site):
     })
 
 
+def redirect_html(dest):
+    """Page-relais statique (GitHub Pages ne gère pas de 301 serveur).
+    Redirige le visiteur et transmet le référencement via <link canonical>."""
+    return f"""<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Redirection…</title>
+<link rel="canonical" href="{esc(dest)}">
+<meta http-equiv="refresh" content="0; url={esc(dest)}">
+<script>location.replace({json.dumps(dest)})</script>
+</head>
+<body>
+<p>Cette page a déménagé. <a href="{esc(dest)}">Continuer →</a></p>
+</body>
+</html>
+"""
+
+
 def project_ld(site, p, image, desc, path):
     """JSON-LD VisualArtwork pour une page projet."""
     return _ld({
@@ -477,7 +496,28 @@ def build():
     sm += "".join(f"<url><loc>{base}{u}</loc></url>\n" for u in urls) + "</urlset>\n"
     (OUT / "sitemap.xml").write_text(sm, encoding="utf-8")
 
-    print(f"✓ Build OK : {len(projects)} projets → {OUT}")
+    # --- redirections (anciennes URLs Cargo /<slug> -> /project/<slug>/) ---
+    # Cargo servait chaque projet sur https://blindsp0t.com/<slug> (cf. scrape.py).
+    # Les nouvelles URLs sont /project/<slug>/ : on génère une page-relais par ancienne URL
+    # pour ne pas perdre l'indexation Google après la bascule DNS.
+    redirects = {p["slug"]: f"/project/{p['slug']}/" for p in projects}
+    rfile = CONTENT / "redirects.yml"
+    if rfile.exists():                       # entrées manuelles (About, slugs renommés…)
+        redirects.update(yaml.safe_load(rfile.read_text(encoding="utf-8")) or {})
+    n_red = 0
+    for old, new in redirects.items():
+        old = str(old).strip("/")
+        if not old:
+            continue
+        d = OUT / old
+        if (d / "index.html").exists():      # ne jamais écraser une vraie page
+            print(f"  ! redirection ignorée (collision) : /{old}/")
+            continue
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "index.html").write_text(redirect_html(abs_url(site, new) or new), encoding="utf-8")
+        n_red += 1
+
+    print(f"✓ Build OK : {len(projects)} projets, {n_red} redirections → {OUT}")
 
 
 def contact_body(site, prefix):
