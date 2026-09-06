@@ -1,5 +1,6 @@
 ---
 title: Tekhné
+description: "Création hybride mêlant art numérique, cirque et shibari autour du transhumanisme. Collaboration avec la Cie du Cirque Aléatoire."
 slug: Tekhne
 order: 19
 tags:

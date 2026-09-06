@@ -1,5 +1,6 @@
 ---
 title: FIELDS
+description: "Live A/V immersif pour dômes et planétariums : un voyage audiovisuel 3D dans la poésie cachée de notre environnement. SAT Montréal."
 slug: FIELDS
 order: 6
 tags:

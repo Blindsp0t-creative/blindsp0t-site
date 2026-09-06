@@ -1,5 +1,6 @@
 ---
 title: RetroAction
+description: "Captation 3D et effets spéciaux de particules pour le clip « A Noisy Blast » de Mat3r Dolorosa (label Jarring Effects)."
 slug: RetroAction
 order: 16
 tags:

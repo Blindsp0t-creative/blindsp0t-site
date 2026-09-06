@@ -1,5 +1,6 @@
 ---
 title: Big Data
+description: "Scénographie vidéo interactive pour le spectacle Big Data (Cie La Quincaillerie Moderne), entre théâtre, danse et culture numérique."
 slug: Big-Data
 order: 13
 tags:

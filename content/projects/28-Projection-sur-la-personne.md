@@ -1,5 +1,6 @@
 ---
 title: Projection sur la personne
+description: "Mapping vidéo en temps réel projetant l'image sur un corps en mouvement, grâce à un couple Kinect / vidéoprojecteur calibré."
 slug: Projection-sur-la-personne
 order: 28
 tags:

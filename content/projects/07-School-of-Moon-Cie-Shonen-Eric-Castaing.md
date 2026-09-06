@@ -1,5 +1,6 @@
 ---
 title: School of Moon - Cie Shonen, Eric Castaing
+description: "Régie robotique pour School of Moon, pièce de danse contemporaine du chorégraphe Eric Minh Cuong Castaing (Cie Shonen)."
 slug: School-of-Moon-Cie-Shonen-Eric-Castaing
 order: 7
 tags:

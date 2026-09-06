@@ -1,5 +1,6 @@
 ---
 title: Decorporation @ Mirage Festival
+description: "Dispositif de réalité virtuelle et caméra stéréoscopique offrant une troublante expérience de décorporation. Mirage Festival 2018."
 slug: Decorporation-Mirage-Festival
 order: 9
 tags:

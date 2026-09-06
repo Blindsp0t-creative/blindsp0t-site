@@ -1,5 +1,6 @@
 ---
 title: Les AVEUGLES
+description: "Dispositif immersif en réalité virtuelle pour 12 spectateurs, d'après Maeterlinck — création BlindSp0t avec la Cie INVIVO."
 slug: Les-AVEUGLES
 order: 5
 tags:

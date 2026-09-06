@@ -1,5 +1,6 @@
 ---
 title: Intel 5G tunnel @ CES 2018
+description: "Tunnel immersif et interactif en parois LED transparentes conçu pour le stand Intel 5G au CES 2018 de Las Vegas."
 slug: Intel-5G-tunnel-CES-2018
 order: 10
 tags:

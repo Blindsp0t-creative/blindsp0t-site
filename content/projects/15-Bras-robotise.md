@@ -1,5 +1,6 @@
 ---
 title: Bras robotisé
+description: "Installation robotique : un bras 4 axes piloté en temps réel au Leap Motion, imaginant le futur des outils du bâtiment."
 slug: Bras-robotise
 order: 15
 tags:

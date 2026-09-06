@@ -1,5 +1,6 @@
 ---
 title: La Fin Du Présent
+description: "Spectacle immersif d'après Maeterlinck, mise en scène Julien Dubuc : théâtre et capture volumétrique en temps réel."
 slug: La-Fin-Du-Present
 order: 1
 tags:

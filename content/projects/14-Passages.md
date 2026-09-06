@@ -1,5 +1,6 @@
 ---
 title: Passages
+description: "Série d'expérimentations sur la captation du mouvement dansé avec Kinect et DepthKit. Danse : Séverine Second."
 slug: Passages
 order: 14
 tags:

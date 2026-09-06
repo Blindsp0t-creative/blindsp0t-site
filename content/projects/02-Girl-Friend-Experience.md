@@ -1,5 +1,6 @@
 ---
 title: Girl Friend Experience
+description: "Installation multi-écrans en capture volumétrique d'Ugo Arsac, sur la solitude et l'intimité à l'ère des réseaux sociaux."
 slug: Girl-Friend-Experience
 order: 2
 tags:

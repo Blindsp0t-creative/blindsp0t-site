@@ -1,5 +1,6 @@
 ---
 title: GERMINATION
+description: "Pièce en réalité augmentée pour 80 spectateurs (Cie Haut et Court, Joris Mathieu) : une utopie immersive dont vous êtes le héros."
 slug: GERMINATION
 order: 4
 tags:

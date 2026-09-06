@@ -1,5 +1,6 @@
 ---
 title: Dubai Festival of Lights
+description: "L'installation lumineuse interactive HiStriker adaptée en version verticale pour la première édition du Dubaï Festival of Lights."
 slug: Dubai-Festival-of-Lights
 order: 26
 tags:

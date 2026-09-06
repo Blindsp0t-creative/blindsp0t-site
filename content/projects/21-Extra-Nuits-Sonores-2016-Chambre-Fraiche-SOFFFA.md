@@ -1,5 +1,6 @@
 ---
 title: 'Extra Nuits Sonores 2016 : Chambre Fraiche @ SOFFFA'
+description: "Installation interactive créée avec Clément Boghossian pour un événement Extra du festival Nuits Sonores, au SOFFFA à Lyon."
 slug: Extra-Nuits-Sonores-2016-Chambre-Fraiche-SOFFFA
 order: 21
 tags:

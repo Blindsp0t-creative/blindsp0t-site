@@ -34,6 +34,7 @@ collections:
     public_folder: "/assets/images/{{fields.slug}}"
     fields:
       - { label: Titre, name: title, widget: string }
+      - { label: "Description (SEO)", name: description, widget: text, required: false, pattern: ['^.{0,160}$', '160 caractères maximum'], hint: "Phrase affichée sous le titre dans Google et lors du partage du lien (≈150 caractères). Laisser vide = généré automatiquement." }
       - { label: "Slug (URL, sans espaces)", name: slug, widget: string, pattern: ['^[A-Za-z0-9-]+$', 'Lettres, chiffres et tirets uniquement'] }
       - { label: "Ordre d'affichage", name: order, widget: number, value_type: int, min: 1, default: 99 }
       - { label: Tags, name: tags, widget: list, required: false, default: [] }

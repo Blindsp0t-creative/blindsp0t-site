@@ -1,5 +1,6 @@
 ---
 title: To Be A Machine (version 2.0)
+description: "Spectacle en réalité virtuelle et deepfake de la Cie Dead Centre où le spectateur devient acteur. Direction technique BlindSp0t."
 slug: To-Be-A-Machine-version-2-0
 order: 3
 tags:

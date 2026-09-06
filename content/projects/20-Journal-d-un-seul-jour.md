@@ -1,5 +1,6 @@
 ---
 title: Journal d'un seul jour
+description: "Spectacle de danse de la Cie Acte (Annick Charlot) à la Maison de la Danse, où le numérique investit les téléphones des spectateurs."
 slug: Journal-d-un-seul-jour
 order: 20
 tags:

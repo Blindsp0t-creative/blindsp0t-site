@@ -1,5 +1,6 @@
 ---
 title: Hi StrikerFête des Lumières - Lyon 2014
+description: "Installation interactive et lumineuse monumentale pour la Fête des Lumières de Lyon : le jeu forain du Hi-Striker revisité."
 slug: Hi-StrikerFete-des-Lumieres-Lyon-2014
 order: 23
 tags:

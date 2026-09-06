@@ -1,5 +1,6 @@
 ---
 title: Scénographie - Carl Craig / Marcell Dettman - We Are Reality
+description: "Scénographie LED monumentale (64 panneaux, 25 000 LEDs) pour la soirée We Are Reality avec Carl Craig et Marcel Dettmann au Transbordeur."
 slug: Scenographie-Carl-Craig-Marcell-Dettman-We-Are-Reality
 order: 18
 tags:

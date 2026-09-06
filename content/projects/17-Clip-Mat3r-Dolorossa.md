@@ -1,5 +1,6 @@
 ---
 title: Clip - Mat3r Dolorossa
+description: "Clip musical en capture volumétrique (DepthKit) pour Mat3r Dolorosa, sur une reprise de « Wandering Star » de Portishead."
 slug: Clip-Mat3r-Dolorossa
 order: 17
 tags:

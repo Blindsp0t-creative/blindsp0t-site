@@ -1,5 +1,6 @@
 ---
 title: Projection Collective
+description: "Installation interactive en ombres chinoises animées à 360°, imaginant la ville de demain. Présentée au Quai des Savoirs, Toulouse."
 slug: Projection-Collective
 order: 11
 tags:

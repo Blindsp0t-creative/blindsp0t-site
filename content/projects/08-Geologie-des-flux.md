@@ -1,5 +1,6 @@
 ---
 title: Géologie des flux
+description: "Installation interactive et lumineuse LED pilotée par machine learning (OpenPose), produite par le Mirage Festival à Lyon."
 slug: Geologie-des-flux
 order: 8
 tags:

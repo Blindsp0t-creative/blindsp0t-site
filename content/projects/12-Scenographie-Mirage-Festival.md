@@ -1,5 +1,6 @@
 ---
 title: Scénographie - Mirage Festival
+description: "Scénographie LED interactive « DELete » créée pour le Mirage Festival au Transbordeur : panneaux lumineux pilotés en vidéo live."
 slug: Scenographie-Mirage-Festival
 order: 12
 tags:

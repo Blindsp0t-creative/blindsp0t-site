@@ -1,5 +1,6 @@
 ---
 title: Desincarne
+description: "Performance hybride entre cirque, vidéo et programmation interrogeant le rapport au corps et au virtuel. Collectif Beam'Art."
 slug: Desincarne
 order: 29
 tags:

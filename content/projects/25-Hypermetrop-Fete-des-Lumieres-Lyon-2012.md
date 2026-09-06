@@ -1,5 +1,6 @@
 ---
 title: Hypermetrop - Fete des Lumieres Lyon 2012
+description: "Création monumentale de la Fête des Lumières de Lyon 2012 mêlant mapping vidéo et danse hip-hop. Production AADN."
 slug: Hypermetrop-Fete-des-Lumieres-Lyon-2012
 order: 25
 tags:

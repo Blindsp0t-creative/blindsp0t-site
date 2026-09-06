@@ -11,7 +11,7 @@ prévisualisation locale.
 
 Usage : tools/.venv/bin/python tools/build.py
 """
-import glob, hashlib, html, re, shutil
+import glob, hashlib, html, json, re, shutil
 from pathlib import Path
 import yaml
 
@@ -59,6 +59,59 @@ def asset(p, prefix=""):
 
 def esc(s):
     return html.escape(s or "", quote=True)
+
+
+# ------------------------------------------------------ SEO : URLs & données structurées
+
+def abs_url(site, path):
+    """URL absolue (domaine final) pour canonical / og:url / og:image / sitemap.
+    Renvoie '' si le domaine n'est pas encore renseigné dans site.yml."""
+    base = (site.get("domain") or "").rstrip("/")
+    if not path.startswith("/"):
+        path = "/" + path
+    return (base + path) if base else ""
+
+
+def og_image(site, cover):
+    """URL absolue de l'image de partage : couverture du projet, sinon logo par défaut."""
+    rel = asset(cover, "") if cover else "assets/brand/logo_white.png"
+    return abs_url(site, "/" + rel)
+
+
+def _ld(obj):
+    """Sérialise un objet JSON-LD (échappe '<' pour rester sûr dans une balise <script>)."""
+    obj = {k: v for k, v in obj.items() if v}
+    return json.dumps(obj, ensure_ascii=False).replace("<", "\\u003c")
+
+
+def person_ld(site):
+    """JSON-LD Person (Antoine Vanel) — accueil + About."""
+    sames = [v for _, v in _iter_socials(site) if str(v).startswith("http")]
+    return _ld({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": site.get("author", "Antoine Vanel"),
+        "alternateName": site.get("title", "BlindSp0t"),
+        "url": abs_url(site, "/"),
+        "jobTitle": "Artiste numérique · Creative technologist",
+        "address": {"@type": "PostalAddress", "addressLocality": "Lyon", "addressCountry": "FR"},
+        "sameAs": sames,
+    })
+
+
+def project_ld(site, p, image, desc, path):
+    """JSON-LD VisualArtwork pour une page projet."""
+    return _ld({
+        "@context": "https://schema.org",
+        "@type": "VisualArtwork",
+        "name": p.get("title"),
+        "url": abs_url(site, path),
+        "image": image,
+        "description": desc,
+        "keywords": ", ".join(p.get("tags") or []),
+        "creator": {"@type": "Person", "name": site.get("author", "Antoine Vanel"),
+                    "url": abs_url(site, "/")},
+    })
 
 
 def mini_markdown(text):
@@ -136,21 +189,39 @@ def footer(site, prefix):
     )
 
 
-def page_shell(site, title, body, prefix="", active="", desc="", noindex=False):
+def page_shell(site, title, body, prefix="", active="", desc="", noindex=False,
+               path="/", image="", jsonld="", og_type="website"):
     dtitle = f"{title} — {site['title']}" if title and title != site["title"] else site["title"]
+    description = desc or site.get("description", "")
     robots = '<meta name="robots" content="noindex,nofollow">\n' if noindex else ""
+    # Canonical / og:url : URL absolue du domaine final (pas sur les pages noindex).
+    canonical = "" if noindex else abs_url(site, path)
+    canon_tags = ""
+    if canonical:
+        canon_tags = (f'<link rel="canonical" href="{esc(canonical)}">\n'
+                      f'<meta property="og:url" content="{esc(canonical)}">\n')
+    img_tags = ""
+    if image:
+        img_tags = (f'<meta property="og:image" content="{esc(image)}">\n'
+                    f'<meta property="og:image:alt" content="{esc(dtitle)}">\n'
+                    f'<meta name="twitter:image" content="{esc(image)}">\n')
+    jsonld_tag = f'<script type="application/ld+json">{jsonld}</script>\n' if jsonld else ""
     return f"""<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {robots}<title>{esc(dtitle)}</title>
-<meta name="description" content="{esc(desc or site.get('description',''))}">
+<meta name="description" content="{esc(description)}">
 <meta name="keywords" content="{esc(site.get('keywords',''))}">
-<meta property="og:title" content="{esc(dtitle)}">
-<meta property="og:description" content="{esc(desc or site.get('description',''))}">
-<meta property="og:type" content="website">
-<link rel="shortcut icon" href="{prefix}assets/brand/favicon.ico">
+{canon_tags}<meta property="og:title" content="{esc(dtitle)}">
+<meta property="og:description" content="{esc(description)}">
+<meta property="og:type" content="{og_type}">
+<meta property="og:site_name" content="{esc(site['title'])}">
+{img_tags}<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(dtitle)}">
+<meta name="twitter:description" content="{esc(description)}">
+{jsonld_tag}<link rel="shortcut icon" href="{prefix}assets/brand/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
@@ -167,28 +238,29 @@ def page_shell(site, title, body, prefix="", active="", desc="", noindex=False):
 
 # --------------------------------------------------------------- blocks
 
-def render_text(b, prefix):
+def render_text(b, prefix, alt=""):
     return f'<div class="block text">{b.get("html","")}</div>'
 
 
-def render_image(b, prefix):
+def render_image(b, prefix, alt=""):
     src = esc(asset(b["file"], prefix))
-    return f'<div class="block image"><img loading="lazy" src="{src}" alt=""></div>'
+    return f'<div class="block image"><img loading="lazy" src="{src}" alt="{esc(alt)}"></div>'
 
 
-def render_video(b, prefix):
+def render_video(b, prefix, alt=""):
     src = esc(b.get("src", ""))
-    return f'<div class="block video"><div class="frame"><iframe src="{src}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>'
+    title = f' title="{esc(alt)}"' if alt else ""
+    return f'<div class="block video"><div class="frame"><iframe src="{src}"{title} allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>'
 
 
-def render_gallery(b, prefix):
+def render_gallery(b, prefix, alt=""):
     imgs = b.get("images", [])
     if not imgs:
         return ""
     # une seule image -> affichage simple
     if len(imgs) == 1:
         im = imgs[0]
-        return f'<div class="block image"><img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt=""></div>'
+        return f'<div class="block image"><img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt="{esc(alt)}"></div>'
     # plusieurs images -> diaporama autoplay (rendu uniforme pour toutes les galeries)
     speed = b.get("speed") or 2.5
     # hauteur constante = ratio de la 1re image (évite les sauts de mise en page)
@@ -199,7 +271,7 @@ def render_gallery(b, prefix):
     except (TypeError, ValueError):
         ar = "16 / 9"
     slides = "".join(
-        f'<div class="slide{" active" if k==0 else ""}"><img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt=""></div>'
+        f'<div class="slide{" active" if k==0 else ""}"><img loading="lazy" src="{esc(asset(im["file"], prefix))}" alt="{esc(f"{alt} — {k+1}" if alt else "")}"></div>'
         for k, im in enumerate(imgs)
     )
     dots = "".join(f'<span class="dot{" active" if k==0 else ""}"></span>' for k in range(len(imgs)))
@@ -213,7 +285,7 @@ def render_gallery(b, prefix):
     )
 
 
-def render_columns(b, prefix):
+def render_columns(b, prefix, alt=""):
     # Nouveau format : deux champs nommés fr / en (côte à côte).
     # Ancien format (compat) : liste `columns: [FR, EN]`.
     if "fr" in b or "en" in b:
@@ -283,14 +355,18 @@ def build():
     if domain:
         (OUT / "CNAME").write_text(domain + "\n")
     (OUT / ".nojekyll").write_text("")
-    (OUT / "robots.txt").write_text("User-agent: *\nAllow: /\n")
+    robots_txt = "User-agent: *\nAllow: /\n"
+    sm_url = abs_url(site, "/sitemap.xml")
+    if sm_url:
+        robots_txt += f"Sitemap: {sm_url}\n"
+    (OUT / "robots.txt").write_text(robots_txt)
 
     # --- grille de vignettes (accueil : prefix "" ; page projects : prefix "../") ---
     def grid(prefix):
         def thumb(p):
             tags = "".join(f"<span>{esc(t)}</span>" for t in (p.get("tags") or []))
             cover = esc(asset(p.get("cover"), prefix)) if p.get("cover") else ""
-            img = (f'<img class="cover-img" loading="lazy" src="{cover}" alt="">'
+            img = (f'<img class="cover-img" loading="lazy" src="{cover}" alt="{esc(p.get("title",""))}">'
                    if cover else '<div class="cover-img"></div>')
             link = f'{prefix}project/{esc(p["slug"])}/'
             return (
@@ -318,20 +394,33 @@ def build():
         f'{grid("")}'
     )
     (OUT / "index.html").write_text(
-        page_shell(site, site["title"], home_body, prefix="", active="projects"), encoding="utf-8")
+        page_shell(site, site["title"], home_body, prefix="", active="projects",
+                   path="/", image=og_image(site, None), jsonld=person_ld(site)), encoding="utf-8")
 
     # --- /projects/ ---
     (OUT / "projects").mkdir()
     (OUT / "projects" / "index.html").write_text(
-        page_shell(site, "Projects", nav("../", "projects") + grid("../"), prefix="../", active="projects"), encoding="utf-8")
+        page_shell(site, "Projects", nav("../", "projects") + grid("../"), prefix="../", active="projects",
+                   path="/projects/", image=og_image(site, None)), encoding="utf-8")
 
     # --- pages projet (profondeur 2) ---
     for p in projects:
         pfx = "../../"
+        alt = p.get("title", "")
         blocks = merge_media_runs(p.get("blocks", []))
-        body_blocks = "".join(BLOCK_RENDER.get(b["type"], lambda b, pr: "")(b, pfx) for b in blocks)
-        desc = re.sub(r"<[^>]+>", " ", next((b["html"] for b in p.get("blocks", []) if b["type"] == "text"), ""))
-        desc = re.sub(r"\s+", " ", desc).strip()[:180]
+        body_blocks = "".join(
+            BLOCK_RENDER.get(b["type"], lambda b, pr, a="": "")(b, pfx, alt) for b in blocks)
+        # Description : champ `description` du front-matter en priorité (éditable au CMS),
+        # sinon 1er bloc texte, sinon repli titre + tags (projets média-only).
+        desc = (p.get("description") or "").strip()
+        if not desc:
+            desc = re.sub(r"<[^>]+>", " ", next((b["html"] for b in p.get("blocks", []) if b["type"] == "text"), ""))
+            desc = re.sub(r"\s+", " ", desc).strip()[:180]
+        if not desc:
+            tags = ", ".join(p.get("tags") or [])
+            desc = f'{p.get("title","")} — {site.get("author","")}' + (f" · {tags}" if tags else "")
+        path = f'/project/{p["slug"]}/'
+        image = og_image(site, p.get("cover"))
         body = (
             f'{nav(pfx, "")}'
             '<main class="page">'
@@ -343,7 +432,10 @@ def build():
         )
         d = OUT / "project" / p["slug"]
         d.mkdir(parents=True)
-        (d / "index.html").write_text(page_shell(site, p["title"], body, prefix=pfx, desc=desc), encoding="utf-8")
+        (d / "index.html").write_text(
+            page_shell(site, p["title"], body, prefix=pfx, desc=desc, path=path, image=image,
+                       jsonld=project_ld(site, p, image, desc, path), og_type="article"),
+            encoding="utf-8")
 
     # --- About (profondeur 1) : titre + filet + 2 colonnes FR/EN ---
     fm, md = load_md(CONTENT / "pages" / "about.md")
@@ -356,9 +448,15 @@ def build():
         prose = f'<div class="prose">{fr}</div>'
     body = (f'{nav("../","about")}<main class="page"><hr>'
             f'<h1 class="project-title">{esc(fm.get("title","About"))}</h1>{prose}</main>')
+    # Description dédiée : à partir de la présentation d'Antoine (pas de la citation d'intro).
+    about_txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", fr)).strip()
+    i = about_txt.find("Antoine Vanel")
+    about_desc = (about_txt[i:] if i != -1 else about_txt)[:180]
     (OUT / "about").mkdir()
     (OUT / "about" / "index.html").write_text(
-        page_shell(site, "About", body, prefix="../", active="about"), encoding="utf-8")
+        page_shell(site, "About", body, prefix="../", active="about",
+                   path="/about/", desc=about_desc, image=og_image(site, None),
+                   jsonld=person_ld(site)), encoding="utf-8")
 
     # --- Confidentialité (profondeur 1) ---
     fm, md = load_md(CONTENT / "pages" / "privacy.md")
@@ -369,7 +467,8 @@ def build():
     # --- Contact (profondeur 1) ---
     (OUT / "contact").mkdir()
     (OUT / "contact" / "index.html").write_text(
-        page_shell(site, "Contact", nav("../", "contact") + contact_body(site, "../"), prefix="../", active="contact"), encoding="utf-8")
+        page_shell(site, "Contact", nav("../", "contact") + contact_body(site, "../"),
+                   prefix="../", active="contact", path="/contact/", image=og_image(site, None)), encoding="utf-8")
 
     # --- sitemap ---
     urls = ["/", "/about/", "/contact/", "/projects/"] + [f"/project/{p['slug']}/" for p in projects]

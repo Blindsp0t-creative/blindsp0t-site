@@ -1,5 +1,6 @@
 ---
 title: Riddim Collision n#17
+description: "Scénographie LED avec dôme géodésique et 12 écrans maison pour la 17e édition du festival Riddim Collision au Transbordeur."
 slug: Riddim-Collision-n-17
 order: 22
 tags: []

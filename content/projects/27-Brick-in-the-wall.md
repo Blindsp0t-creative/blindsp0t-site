@@ -1,5 +1,6 @@
 ---
 title: Brick in the wall
+description: "Installation immersive à 360° où le spectateur déforme son environnement par ses mouvements, via trois vidéoprojecteurs."
 slug: Brick-in-the-wall
 order: 27
 tags:

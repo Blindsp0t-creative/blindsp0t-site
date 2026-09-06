@@ -1,5 +1,6 @@
 ---
 title: TranJS
+description: "Projection au sol interactive de 15 m réagissant en temps réel aux spectateurs, pour les 150 ans des relations Suisse-Japon."
 slug: TranJS
 order: 24
 tags:
