@@ -246,7 +246,10 @@ def cmd_serve(args):
 def cmd_publish(args):
     msg = args[0] if args else "Mise à jour du contenu"
     cmd_build()
-    subprocess.run(["git", "-C", str(ROOT), "add", "content", "assets"], check=True)
+    # Stage TOUT le dépôt suivi (content, assets, tools, admin, .github, docs…) ;
+    # _site/ est gitignored donc exclu. Évite d'oublier silencieusement les
+    # changements de code/config (build.py, admin/config.yml…) au moment de publier.
+    subprocess.run(["git", "-C", str(ROOT), "add", "-A"], check=True)
     r = subprocess.run(["git", "-C", str(ROOT), "commit", "-m", msg])
     if r.returncode != 0:
         print("(rien à committer)")
