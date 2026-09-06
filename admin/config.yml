@@ -8,7 +8,7 @@ backend:
   branch: main
   # base_url : relais OAuth GitHub (voir README, section « CMS web »).
   # Exemple avec le worker fourni : https://VOTRE-RELAIS.workers.dev
-  base_url: https://REMPLACER-PAR-VOTRE-RELAIS-OAUTH
+  base_url: https://blindsp0t-cms.dash-cloudflare-com-emit433.workers.dev
 
 # Sauvegarde des éditions en brouillon local tant que l'onglet est ouvert
 publish_mode: simple
