@@ -4,12 +4,13 @@ description: Futur[s] invite 10 spectateur·ice·s à vivre collectivement un mo
   où le virtuel et le réel cohabitent.
 slug: futurs
 order: 1
+date: 2026-09
 tags:
   - Réalité
   - augmentée
   - mixte
   - compagnie IF
-cover: /assets/images/5c43a2_f6fe79ae1c294ffa962921d409346218~mv2.avif
+cover: /assets/images/futurs/5c43a2_f6fe79ae1c294ffa962921d409346218~mv2.avif
 blocks:
   - type: columns
     fr: >-
@@ -28,7 +29,7 @@ blocks:
       J'ai été en charge du développement de l'expérience en réalité mixte, et notamment des fonctionnalités permettant a tous les spectateurs de partager le même univers (univers virtuel aligné et synchronisé), lié à l'environnement physique de la performance. J'ai également concu un outil de régie (immersif, et opéré par une des performeuses directement dans son casque de réalité augmentée), dédié à cette création.
 
 
-      <br><br>[Isis Fahmy](<>) <br><br>[Benoit Renaudin](<>)  <br>
+      <br><br><a href="https://www.isisfahmy.com/futurs">Isis Fahmy</a> <br><br><a href="https://www.benoitrenaudin.com">Benoit Renaudin</a>  <br>
     en: >-
       Design: Isis Fahmy & Benoît Renaudin <br><br>
 
@@ -45,7 +46,7 @@ blocks:
       I was in charge of developing the mixed reality experience, particularly the features that allow all audience members to share the same universe (a virtual universe that is aligned and synchronized) linked to the physical environment of the performance. I also designed a control tool (immersive and operated by one of the performers directly through her augmented reality headset) specifically for this production.
 
 
-      <br><br>[Isis Fahmy](https://www.isisfahmy.com/futurs) <br><br>[Benoit Renaudin](https://www.benoitrenaudin.com)  <br>
+      <br><br><a href="https://www.isisfahmy.com/futurs">Isis Fahmy</a> <br><br><a href="https://www.benoitrenaudin.com">Benoit Renaudin</a>  <br>
   - type: video
     src: https://www.youtube.com/embed/SJVjhmy8KOU?si=6exjghQZF__5h2sp
   - type: gallery
@@ -54,7 +55,7 @@ blocks:
     speed: 2.5
     arrows: true
     images:
-      - /assets/images/5c43a2_f6fe79ae1c294ffa962921d409346218~mv2.avif
-      - /assets/images/5c43a2_8852695ce8894b8cb0a52a9d9508e5dd~mv2.jpg
-      - /assets/images/5c43a2_2f6e267d64564f80811ee2a711d3359d~mv2.avif
+      - /assets/images/futurs/5c43a2_f6fe79ae1c294ffa962921d409346218~mv2.avif
+      - /assets/images/futurs/5c43a2_8852695ce8894b8cb0a52a9d9508e5dd~mv2.jpg
+      - /assets/images/futurs/5c43a2_2f6e267d64564f80811ee2a711d3359d~mv2.avif
 ---

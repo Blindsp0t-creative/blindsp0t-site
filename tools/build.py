@@ -274,6 +274,10 @@ def render_video(b, prefix, alt=""):
 
 def render_gallery(b, prefix, alt=""):
     imgs = b.get("images", [])
+    # Tolère deux formats d'entrée d'image : objet {file, w, h} (scraper / manage.py)
+    # OU simple chaîne de chemin (le CMS Decap écrit une liste de chaînes). Sans ça,
+    # une galerie créée au CMS fait planter le build (`'str' object has no attribute 'get'`).
+    imgs = [{"file": im} if isinstance(im, str) else im for im in imgs]
     if not imgs:
         return ""
     # une seule image -> affichage simple
@@ -359,7 +363,15 @@ def build():
     for f in sorted(glob.glob(str(CONTENT / "projects" / "*.md"))):
         fm, _ = load_md(f)
         projects.append(fm)
+    # Tri d'affichage : par DATE décroissante (le plus récent en premier), avec repli
+    # sur `order` (ordre manuel) pour les projets sans date. Deux tris stables :
+    #   1) order croissant  -> départage les projets à date égale / sans date
+    #   2) date décroissante -> les projets datés remontent en tête ; les non-datés
+    #      (date "") restent derrière en conservant leur `order`.
+    # Avantage : un nouveau projet daté d'aujourd'hui se place tout seul en premier,
+    # SANS renuméroter les autres (cf. demande CMS « décaler les index »).
     projects.sort(key=lambda p: p.get("order", 999))
+    projects.sort(key=lambda p: str(p.get("date") or ""), reverse=True)
 
     if OUT.exists():
         shutil.rmtree(OUT)
