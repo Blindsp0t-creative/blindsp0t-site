@@ -55,7 +55,7 @@ blocks:
     speed: 2.5
     arrows: true
     images:
-      - /assets/images/futurs/5c43a2_f6fe79ae1c294ffa962921d409346218~mv2.avif
-      - /assets/images/futurs/5c43a2_8852695ce8894b8cb0a52a9d9508e5dd~mv2.jpg
-      - /assets/images/futurs/5c43a2_2f6e267d64564f80811ee2a711d3359d~mv2.avif
+      - file: /assets/images/futurs/5c43a2_f6fe79ae1c294ffa962921d409346218~mv2.avif
+      - file: /assets/images/futurs/5c43a2_8852695ce8894b8cb0a52a9d9508e5dd~mv2.jpg
+      - file: /assets/images/futurs/5c43a2_2f6e267d64564f80811ee2a711d3359d~mv2.avif
 ---

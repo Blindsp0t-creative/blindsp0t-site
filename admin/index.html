@@ -95,7 +95,8 @@
             var imgs = b.get('images');
             var gk = [];
             if (imgs) imgs.forEach(function (im, j) {
-              var ff = im.get('file');
+              // tolère deux formats : objet {file} (Immutable Map) OU simple chaîne (chemin)
+              var ff = (im && typeof im.get === 'function') ? im.get('file') : im;
               if (ff) gk.push(img(j, 'bp-gimg', ff, getAsset));
             });
             if (gk.length) kids.push(h('div', { key: key, className: 'bp-block bp-gallery' }, gk));
