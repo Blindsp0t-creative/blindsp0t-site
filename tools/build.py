@@ -489,6 +489,24 @@ def build():
         page_shell(site, "Contact", nav("../", "contact") + contact_body(site, "../"),
                    prefix="../", active="contact", path="/contact/", image=og_image(site, None)), encoding="utf-8")
 
+    # --- 404 (GitHub Pages sert /404.html pour toute URL inconnue) ---
+    # EXCEPTION à la règle des chemins relatifs : cette page est renvoyée telle quelle
+    # à N'IMPORTE QUELLE profondeur d'URL (ex. /danse, /a/b/c, ancienne page Cargo
+    # disparue…). Des chemins relatifs casseraient alors le CSS/logo. On utilise donc
+    # des chemins absolus depuis la racine (prefix="/"), ce qui suppose le site servi
+    # sur l'apex blindsp0t.com — c'est le cas depuis la bascule DNS.
+    nf_body = (
+        f'{nav("/", "")}'
+        '<main class="page">'
+        '<h1 class="project-title">404</h1>'
+        '<p style="max-width:46rem">Cette page n’existe pas ou a déménagé.</p>'
+        '<p><a href="/#projects" style="border-bottom:1px solid rgba(255,255,255,.4)">← Retour aux projets</a></p>'
+        '</main>'
+    )
+    (OUT / "404.html").write_text(
+        page_shell(site, "Page introuvable (404)", nf_body, prefix="/", noindex=True),
+        encoding="utf-8")
+
     # --- sitemap ---
     urls = ["/", "/about/", "/contact/", "/projects/"] + [f"/project/{p['slug']}/" for p in projects]
     base = site.get("domain", "").rstrip("/")
