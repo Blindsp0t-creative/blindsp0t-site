@@ -180,7 +180,7 @@ def create_image_container(url, caption=None, carousel_item=False):
         params["caption"] = caption
     if carousel_item:
         params["is_carousel_item"] = "true"
-    return api_post(_node(), params)["id"]
+    return api_post(f"{_node()}/media", params)["id"]
 
 
 def create_video_container(url, caption=None, carousel_item=False,
@@ -192,7 +192,7 @@ def create_video_container(url, caption=None, carousel_item=False,
         params["is_carousel_item"] = "true"
     if cover_url:
         params["cover_url"] = cover_url
-    cid = api_post(_node(), params)["id"]
+    cid = api_post(f"{_node()}/media", params)["id"]
     wait_ready(cid)                       # vidéo = encodage asynchrone
     return cid
 
@@ -201,11 +201,12 @@ def create_carousel(children_ids, caption):
     params = {"media_type": "CAROUSEL", "children": ",".join(children_ids)}
     if caption is not None:
         params["caption"] = caption
-    return api_post(_node(), params)["id"]
+    return api_post(f"{_node()}/media", params)["id"]
 
 
 def publish(creation_id):
-    return api_post(_node(), {"creation_id": creation_id})  # -> {"id": media_id}
+    # edge de publication : /{node}/media_publish
+    return api_post(f"{_node()}/media_publish", {"creation_id": creation_id})
 
 
 def permalink(media_id):
@@ -280,7 +281,7 @@ def cmd_selftest():
     p = media_files(dirs[0], load_post(dirs[0]))[0]
     url = raw_url(p)
     print("image_url:", url)
-    endpoint = f"{GRAPH}/{API_VERSION}/{_node()}"
+    endpoint = f"{GRAPH}/{API_VERSION}/{_node()}/media"
 
     def _try(label, data, headers=None):
         try:
