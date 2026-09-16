@@ -28,6 +28,7 @@ Structure d'un post (un dossier par post dans queue/) :
       ou 01.mp4         une vidéo -> Reel
 """
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -260,6 +261,15 @@ def check_urls(medias):
 
 # ------------------------------------------------------------------ commandes
 
+def cmd_whoami():
+    """Sonde d'identité : empreinte du token (sans fuite) + qui l'API reconnaît."""
+    tok = _token()
+    fp = hashlib.sha256(tok.encode()).hexdigest()[:12]
+    print(f"token: len={len(tok)} sha256[:12]={fp} node={_node()}")
+    data = api_get(_node(), {"fields": "id,username,account_type"})
+    print("me:", json.dumps(data, ensure_ascii=False))
+
+
 def cmd_list():
     dirs = post_dirs()
     if not dirs:
@@ -375,10 +385,15 @@ def main():
     ap.add_argument("--check-urls", action="store_true",
                     help="(avec --dry-run) vérifie que les URLs brutes répondent")
     ap.add_argument("--list", action="store_true", help="liste la file d'attente")
+    ap.add_argument("--whoami", action="store_true",
+                    help="diagnostic : empreinte du token + identité reconnue par l'API")
     ap.add_argument("--post", metavar="SLUG", help="publie ce dossier précis")
     ap.add_argument("--no-commit", action="store_true",
                     help="ne pas committer/pousser après publication")
     args = ap.parse_args()
+
+    if args.whoami:
+        cmd_whoami(); return
 
     if args.list:
         cmd_list(); return
