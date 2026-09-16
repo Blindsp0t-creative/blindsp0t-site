@@ -270,6 +270,32 @@ def cmd_whoami():
     print("me:", json.dumps(data, ensure_ascii=False))
 
 
+def cmd_selftest():
+    """Diagnostic non destructif : crée des conteneurs (jamais publiés) et affiche
+    chaque réponse, pour isoler ce qui échoue en CI vs local."""
+    cmd_whoami()
+    dirs = post_dirs()
+    if not dirs:
+        print("selftest: file vide"); return
+    p = media_files(dirs[0], load_post(dirs[0]))[0]
+    url = raw_url(p)
+    print("image_url:", url)
+    endpoint = f"{GRAPH}/{API_VERSION}/{_node()}"
+
+    def _try(label, data, headers=None):
+        try:
+            r = requests.post(endpoint, data={**data, "access_token": _token()},
+                              headers=headers, timeout=60)
+            print(f"{label}: {r.status_code} {r.text[:300]}")
+        except Exception as e:  # noqa: BLE001
+            print(f"{label}: EXC {e}")
+
+    _try("A) image simple", {"image_url": url})
+    _try("B) carousel_item", {"image_url": url, "is_carousel_item": "true"})
+    _try("C) image simple + UA navigateur", {"image_url": url},
+         headers={"User-Agent": "Mozilla/5.0 (curl-like)"})
+
+
 def cmd_list():
     dirs = post_dirs()
     if not dirs:
@@ -387,6 +413,8 @@ def main():
     ap.add_argument("--list", action="store_true", help="liste la file d'attente")
     ap.add_argument("--whoami", action="store_true",
                     help="diagnostic : empreinte du token + identité reconnue par l'API")
+    ap.add_argument("--selftest", action="store_true",
+                    help="diagnostic : crée des conteneurs (non publiés) pour isoler un échec")
     ap.add_argument("--post", metavar="SLUG", help="publie ce dossier précis")
     ap.add_argument("--no-commit", action="store_true",
                     help="ne pas committer/pousser après publication")
@@ -394,6 +422,9 @@ def main():
 
     if args.whoami:
         cmd_whoami(); return
+
+    if args.selftest:
+        cmd_selftest(); return
 
     if args.list:
         cmd_list(); return
