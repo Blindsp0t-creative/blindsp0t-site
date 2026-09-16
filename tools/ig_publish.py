@@ -123,8 +123,12 @@ def raw_url(path):
 # ------------------------------------------------------------------ appels API
 
 def _node():
-    uid = os.environ.get("IG_USER_ID", "").strip()
-    return uid or "me"
+    # Chemin « Instagram Login » (base graph.instagram.com) : le token identifie déjà le
+    # compte, donc `me` résout toujours vers le bon nœud de publication. On n'utilise PAS
+    # IG_USER_ID ici : le `user_id` (17841…) appartient à l'ancien chemin graph.facebook.com
+    # et provoque une erreur « Object with ID does not exist » (code 100/subcode 33).
+    # Échappatoire : IG_NODE_OVERRIDE permet de forcer un id explicite si besoin.
+    return os.environ.get("IG_NODE_OVERRIDE", "").strip() or "me"
 
 
 def _token():
