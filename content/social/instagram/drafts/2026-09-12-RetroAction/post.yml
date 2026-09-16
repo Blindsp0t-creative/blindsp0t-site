@@ -1,0 +1,15 @@
+# BROUILLON généré le 2026-09-12 par social_harvest.py — À VALIDER.
+# Projet : RetroAction (slug: RetroAction)
+# 1) relis/ajuste la légende et l'ordre des images (01.jpg, 02.jpg…)
+# 2) candidates/ = images locales EN PLUS (non publiées) : remonte les
+#    voulues à la racine renommées 0N.jpg, supprime le reste + candidates/
+# 3) DÉPLACE ce dossier dans ../queue/ pour publication par ig_publish.py
+# Sources site : df633352_prt_286x286_1499783535.png
+
+type: auto
+caption: |
+  RetroAction
+
+  Captation 3D et effets spéciaux de particules pour le clip « A Noisy Blast » de Mat3r Dolorosa (label Jarring Effects).
+
+  #mat3rdolorossa #clip #depthkit #vfx #blindsp0t #artnumerique #newmediaart #creativecoding #installationart #lyon #digitalart #digitalartist #mediaart #generativeart #visualart #artandtechnology #hybridart #immersiveart #interactiveart #augmentedreality

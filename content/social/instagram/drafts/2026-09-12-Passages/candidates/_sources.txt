@@ -1,0 +1,5 @@
+# Candidats scannés depuis : /Users/blindsp0t/BLINDSP0T/projets/Passages
+# Pour publier : remonte le fichier voulu dans le dossier parent,
+# renommé 0N.jpg, puis supprime candidates/.
+
+cand-01.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/Passages/water.screenflow/thumbnail.jpg  (3840x2160)

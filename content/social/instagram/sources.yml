@@ -1,0 +1,35 @@
+# Mapping projet du site -> dossier de travail local. À VALIDER / CORRIGER.
+# Racine des dossiers : /Users/blindsp0t/BLINDSP0T/projets
+# Valeur = nom du dossier (ou null si aucun). Le commentaire liste d'autres
+# candidats plausibles. Utilisé par : social_harvest.py scan / draft --scan.
+
+La-Fin-Du-Present: 2023_LFDP    # autres : atelier_FIELDS_vaulxEnVelin
+Girl-Friend-Experience: 2024_GFE    # autres : atelier_FIELDS_vaulxEnVelin, topXP
+To-Be-A-Machine-version-2-0: 2022_ToBeAMachine    # autres : machineATrucs, frenchieFoxMachineASous, 2021_machine-a-bise
+GERMINATION: 2021_germination    # autres : MadeIn_SainteMarie, 2024_MIN, 2022_madeIn_session3
+Les-AVEUGLES: 2020_lesAveugles_inVivo    # autres : 2020_lesHoofs, leFil_augmentedSilhouette, 2025_LiveAV
+FIELDS: fields    # autres : atelier_FIELDS_vaulxEnVelin
+School-of-Moon-Cie-Shonen-Eric-Castaing: schoolOfMoon    # autres : 2020_CollegeShonen, cieIkb, CieACTE
+#Geologie-des-flux: scans3D_chantDesSuicides    # autres : quaiDesSavoirs, nuitDesMortsVivants, photomaton_OL
+Decorporation-Mirage-Festival: decorporation - Mirage    # autres : LPA_mirage, mira_proposition, comédieStEtienne
+futurs: 2025_futurS
+Intel-5G-tunnel-CES-2018: 5G_CES_INTEL    # autres : tunnel JEC, hermes2018, MadeIn_SainteMarie
+#Projection-Collective: tunnel JEC    # autres : riggingProject, photomaton_OL, leFil_augmentedSilhouette
+#Scenographie-Mirage-Festival: decorporation - Mirage    # autres : LPA_mirage, transbo_sceno, mira_proposition
+Big-Data: bigData    # autres : dataMosh, 2020_dataprint
+Passages: Passages
+#Bras-robotise: null
+#RetroAction: null
+Clip-Mat3r-Dolorossa: mat3r_dolorosa    # autres : ClipSvindron, photomaton_OL
+Scenographie-Carl-Craig-Marcell-Dettman-We-Are-Reality: transbo_sceno    # autres : atelier_FIELDS_vaulxEnVelin
+Tekhne: TekhnéPropre
+#Journal-d-un-seul-jour: AteliersDorat_jour1
+Extra-Nuits-Sonores-2016-Chambre-Fraiche-SOFFFA: SOFFFA    # autres : schoolOfMoon, nuitDesMortsVivants, AMTech
+Riddim-Collision-n-17:  transbo_sceno
+#Hi-StrikerFete-des-Lumieres-Lyon-2014: scans3D_chantDesSuicides    # autres : quaiDesSavoirs, nuitDesMortsVivants, comédieStEtienne
+#TranJS: null
+#Hypermetrop-Fete-des-Lumieres-Lyon-2012: scans3D_chantDesSuicides    # autres : quaiDesSavoirs, nuitDesMortsVivants
+#Dubai-Festival-of-Lights: schoolOfMoon    # autres : comédieStEtienne, ateliersCM2_stSylvestre
+#Brick-in-the-wall: TheLastDance    # autres : MadeIn_SainteMarie, 2025_beneathTheStreets, 2023_THE_VR_PROJECT
+#Projection-sur-la-personne: tunnel JEC    # autres : riggingProject, DepthKitPro_OSX, 2023_THE_VR_PROJECT
+#Desincarne: scans3D_chantDesSuicides    # autres : quaiDesSavoirs, nuitDesMortsVivants, SupDePub_workshop

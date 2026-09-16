@@ -1,0 +1,24 @@
+# Modèle de post Instagram — copier ce dossier dans ../queue/ et le renommer
+# (ex. queue/2026-09-15-installation-led/). Y déposer les médias + éditer ce fichier.
+#
+# type    : auto | image | carousel | reel
+#           auto = déduit des fichiers (1 image=image, ≥2=carrousel, 1 vidéo=reel)
+# caption : légende (≤ 2200 caractères). Les hashtags vont dans la légende.
+# publish_after : (optionnel) date ISO ; le post ne sera pas publié avant.
+# reel_cover    : (optionnel) nom d'un fichier image du dossier = vignette du Reel.
+
+type: auto
+
+caption: |
+  Titre de l'œuvre — installation numérique interactive.
+  Deux ou trois lignes de contexte / démarche.
+
+  #creativecoding #newmediaart #artnumerique #installationart #lyon
+
+# publish_after: 2026-09-15
+# reel_cover: cover.jpg
+
+# --- Médias à déposer dans CE dossier ---
+# Images : JPEG uniquement (pas de PNG), ≤ 8 Mo, nommées 01.jpg 02.jpg … (l'ordre
+#   des noms = l'ordre du carrousel). 2 à 10 images pour un carrousel.
+# Reel   : une vidéo .mp4/.mov (H.264 + AAC), 9:16 conseillé, ≤ 100 Mo, 3 s–90 s.

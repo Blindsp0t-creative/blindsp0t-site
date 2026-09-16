@@ -1,0 +1,15 @@
+# BROUILLON généré le 2026-09-12 par social_harvest.py — À VALIDER.
+# Projet : Bras robotisé (slug: Bras-robotise)
+# 1) relis/ajuste la légende et l'ordre des images (01.jpg, 02.jpg…)
+# 2) candidates/ = images locales EN PLUS (non publiées) : remonte les
+#    voulues à la racine renommées 0N.jpg, supprime le reste + candidates/
+# 3) DÉPLACE ce dossier dans ../queue/ pour publication par ig_publish.py
+# Sources site : b1feb7fe_robotic_arm_blindsp0t.jpg, 4e8fbb9b_roboticArm_blindsp0t.jpg, bf83a515_robotic_arm_blindsp0t2.jpg
+
+type: auto
+caption: |
+  Bras robotisé
+
+  Installation robotique : un bras 4 axes piloté en temps réel au Leap Motion, imaginant le futur des outils du bâtiment.
+
+  #installation #interactive #leap #motion #blindsp0t #artnumerique #newmediaart #creativecoding #installationart #lyon #digitalart #digitalartist #mediaart #generativeart #visualart #artandtechnology #hybridart #immersiveart #interactiveart #augmentedreality

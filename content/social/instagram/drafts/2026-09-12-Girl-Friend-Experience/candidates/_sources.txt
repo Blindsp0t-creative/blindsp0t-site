@@ -1,0 +1,8 @@
+# Candidats scannés depuis : /Users/blindsp0t/BLINDSP0T/projets/2024_GFE
+# Pour publier : remonte le fichier voulu dans le dossier parent,
+# renommé 0N.jpg, puis supprime candidates/.
+
+cand-01.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/2024_GFE/apercu_layoutPhotoshop01.png  (3840x2160)
+cand-02.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/2024_GFE/layoutEcrans/16-9.png  (1838x1252)
+cand-03.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/2024_GFE/layoutEcrans/2K.png  (2088x1008)
+cand-04.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/2024_GFE/apercu_layoutDebug2.png  (3840x2160)

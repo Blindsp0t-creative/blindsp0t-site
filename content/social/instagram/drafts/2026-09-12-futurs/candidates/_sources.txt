@@ -1,0 +1,6 @@
+# Candidats scannés depuis : /Users/blindsp0t/BLINDSP0T/projets/2025_futurS
+# Pour publier : remonte le fichier voulu dans le dossier parent,
+# renommé 0N.jpg, puis supprime candidates/.
+
+cand-01.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/2025_futurS/sharedSpatialAnchors_demo.screenflow/thumbnail.jpg  (2183x1397)
+cand-02.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/2025_futurS/download.jpeg  (2048x1152)

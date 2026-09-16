@@ -1,0 +1,15 @@
+# Candidats scannés depuis : /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno
+# Pour publier : remonte le fichier voulu dans le dossier parent,
+# renommé 0N.jpg, puis supprime candidates/.
+
+cand-01.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno/devis_metal_aluPlié.jpg  (3200x2368)
+cand-02.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno/1BIS.VARIANTE SUPPORTS LEDS-1.jpg  (1673x1132)
+cand-03.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno/plansProto/VueFace.png  (2712x1502)
+cand-04.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno/plansProto/Vue45.png  (2122x1334)
+cand-05.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno/plansProto/VueDessus.png  (1548x1980)
+cand-06.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno/plansProto/VueCote.png  (2342x1222)
+cand-07.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno/plansProto/VueDessous.png  (2114x998)
+cand-08.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno/plansProto/Vue3D.png  (1976x600)
+cand-09.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno/exportsSketchup/PanneauLED20-3.jpg  (1440x783)
+cand-10.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno/plansProto/Capot.png  (1668x1498)
+cand-11.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/transbo_sceno/exportsSketchup/PanneauLED20-1.jpg  (1440x783)
