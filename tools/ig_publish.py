@@ -164,7 +164,7 @@ def wait_ready(container_id):
     """Attend qu'un conteneur (vidéo/Reel) soit FINISHED avant publication."""
     for _ in range(POLL_MAX):
         st = api_get(container_id, {"fields": "status_code,status"}).get("status_code")
-        if st == "FINISHED":
+        if st in ("FINISHED", None):   # None = champ non renvoyé → publish() gère via retry
             return
         if st == "ERROR":
             print(f"! encodage du média en erreur (container {container_id})")
@@ -201,12 +201,28 @@ def create_carousel(children_ids, caption):
     params = {"media_type": "CAROUSEL", "children": ",".join(children_ids)}
     if caption is not None:
         params["caption"] = caption
-    return api_post(f"{_node()}/media", params)["id"]
+    cid = api_post(f"{_node()}/media", params)["id"]
+    wait_ready(cid)          # le conteneur carrousel doit être FINISHED avant publication
+    return cid
 
 
 def publish(creation_id):
-    # edge de publication : /{node}/media_publish
-    return api_post(f"{_node()}/media_publish", {"creation_id": creation_id})
+    # edge de publication : /{node}/media_publish. Le conteneur peut ne pas être encore
+    # prêt (code 9007 « media not ready ») : on réessaie quelques fois avant d'abandonner.
+    url = f"{GRAPH}/{API_VERSION}/{_node()}/media_publish"
+    for _ in range(POLL_MAX):
+        r = requests.post(url, data={"creation_id": creation_id,
+                                     "access_token": _token()}, timeout=120)
+        if r.ok:
+            return r.json()
+        err = r.json().get("error", {})
+        if err.get("code") == 9007 or err.get("error_subcode") == 2207027:
+            time.sleep(POLL_EVERY)   # pas encore prêt → attendre et réessayer
+            continue
+        print(f"! API {r.status_code} sur media_publish : {r.text[:500]}")
+        sys.exit(3)
+    print("! média toujours pas prêt après plusieurs tentatives.")
+    sys.exit(3)
 
 
 def permalink(media_id):
