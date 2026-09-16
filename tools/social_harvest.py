@@ -30,6 +30,7 @@ import datetime as dt
 import glob
 import os
 import re
+import statistics
 import sys
 import unicodedata
 
@@ -198,9 +199,8 @@ def source_images(slug):
             if os.path.splitext(n)[1].lower() in SRC_EXT]
 
 
-def convert_for_ig(src, dst):
-    """Aplatit l'alpha sur noir, redimensionne (<=1440 large), letterbox sur fond noir
-    si le ratio sort de [0.8, 1.91], sauve en JPEG <=8 Mo. Retourne (w, h)."""
+def _open_rgb(src):
+    """Ouvre une image (1re frame), aplatit l'alpha sur fond noir, renvoie du RGB."""
     im = Image.open(src)
     try:
         im.seek(0)   # 1re frame pour gif/animé
@@ -209,22 +209,48 @@ def convert_for_ig(src, dst):
     if im.mode in ("RGBA", "LA", "P"):
         im = im.convert("RGBA")
         bg = Image.new("RGBA", im.size, BG + (255,))
-        im = Image.alpha_composite(bg, im).convert("RGB")
-    else:
-        im = im.convert("RGB")
+        return Image.alpha_composite(bg, im).convert("RGB")
+    return im.convert("RGB")
 
+
+def image_ratio(src):
+    """Ratio largeur/hauteur de l'image source (pour choisir un ratio commun)."""
+    with Image.open(src) as im:
+        w, h = im.size
+    return w / h
+
+
+def _pad_to_ratio(im, ratio):
+    """Letterboxe l'image sur fond noir pour atteindre EXACTEMENT `ratio` (jamais de crop)."""
     w, h = im.size
-    ratio = w / h
-    if ratio < AR_MIN:                        # trop portrait -> barres gauche/droite
-        tw = int(round(h * AR_MIN))
+    cur = w / h
+    if abs(cur - ratio) < 1e-3:
+        return im
+    if cur < ratio:                           # trop étroit -> barres gauche/droite
+        tw = int(round(h * ratio))
         canvas = Image.new("RGB", (tw, h), BG)
         canvas.paste(im, ((tw - w) // 2, 0))
-        im = canvas
-    elif ratio > AR_MAX:                      # trop paysage -> barres haut/bas
-        th = int(round(w / AR_MAX))
+    else:                                     # trop large -> barres haut/bas
+        th = int(round(w / ratio))
         canvas = Image.new("RGB", (w, th), BG)
         canvas.paste(im, (0, (th - h) // 2))
-        im = canvas
+    return canvas
+
+
+def convert_for_ig(src, dst, target_ratio=None):
+    """Aplatit l'alpha sur noir, redimensionne (<=1440 large), sauve en JPEG <=8 Mo.
+    - target_ratio fourni (carrousel) : letterboxe TOUTES les images à CE ratio commun
+      (sinon Instagram recadre le carrousel sur le ratio de la 1re image).
+    - sinon : letterbox seulement si le ratio sort de [0.8, 1.91]. Retourne (w, h)."""
+    im = _open_rgb(src)
+    if target_ratio is not None:
+        im = _pad_to_ratio(im, target_ratio)
+    else:
+        ratio = im.size[0] / im.size[1]
+        if ratio < AR_MIN:
+            im = _pad_to_ratio(im, AR_MIN)
+        elif ratio > AR_MAX:
+            im = _pad_to_ratio(im, AR_MAX)
 
     w, h = im.size
     if w > MAX_WIDTH:
@@ -237,6 +263,19 @@ def convert_for_ig(src, dst):
             break
         q -= 6
     return im.size
+
+
+def common_ratio(srcs):
+    """Ratio commun pour un carrousel = médiane des ratios, bornée à [AR_MIN, AR_MAX]."""
+    rs = []
+    for s in srcs:
+        try:
+            rs.append(image_ratio(s))
+        except Exception:
+            pass
+    if not rs:
+        return None
+    return min(AR_MAX, max(AR_MIN, statistics.median(rs)))
 
 
 def contact_sheet(images, dst, cell=300, cols=5, bg=(17, 17, 17)):
@@ -465,11 +504,14 @@ def make_draft(proj, slug, max_images, force, scan_local=False):
                 os.rmdir(r)
     os.makedirs(out, exist_ok=True)
 
+    # Carrousel : ratio commun à toutes les images (sinon IG recadre sur la 1re).
+    target_ratio = common_ratio(imgs) if len(imgs) >= 2 else None
+
     ok = []
     for i, src in enumerate(imgs, 1):
         dst = os.path.join(out, f"{i:02d}.jpg")
         try:
-            convert_for_ig(src, dst)
+            convert_for_ig(src, dst, target_ratio=target_ratio)
             ok.append(os.path.basename(src))
         except Exception as e:
             print(f"     ! image illisible ignorée : {os.path.basename(src)} ({e})")
