@@ -16,6 +16,8 @@ Hébergement de la vidéo (Instagram la télécharge depuis une URL publique) :
                   le post. Simple, adapté aux clips légers.
 
 Dépendances : ffmpeg (obligatoire), yt-dlp (pour Vimeo), gh authentifié (pour --host release).
+yt-dlp : binaire imposé (_YTDLP_DEFAULT), surchargeable via la variable d'env YTDLP_BIN,
+sinon repli sur celui du PATH.
 
 Exemples :
   tools/.venv/bin/python tools/reel_prep.py ~/videos/installation.mov --slug installation-led
@@ -25,6 +27,7 @@ import argparse
 import datetime as dt
 import re
 import shutil
+import os
 import subprocess
 import sys
 import tempfile
@@ -35,8 +38,20 @@ ROOT = Path(__file__).resolve().parent.parent
 DRAFTS = ROOT / "content" / "social" / "instagram" / "drafts"
 
 FFMPEG = shutil.which("ffmpeg") or "ffmpeg"
-YTDLP = shutil.which("yt-dlp")
 GH = shutil.which("gh")
+
+# yt-dlp : binaire imposé (surchargeable via $YTDLP_BIN), sinon repli sur le PATH.
+_YTDLP_DEFAULT = "/Users/blindsp0t/BLINDSP0T/projets/2026_BLAST/_MEDIAS/zapping/yt-dlp_macos_last"
+
+
+def _resolve_ytdlp():
+    cand = os.environ.get("YTDLP_BIN") or _YTDLP_DEFAULT
+    if cand and os.path.isfile(cand) and os.access(cand, os.X_OK):
+        return cand
+    return shutil.which("yt-dlp")
+
+
+YTDLP = _resolve_ytdlp()
 
 REEL_W, REEL_H = 1080, 1920          # 9:16
 MAX_SECONDS = 90                     # durée max (Reels : viser 5–90 s)
