@@ -9,6 +9,10 @@ jamais de toucher au code**. Deux façons d'éditer :
 - 🌐 **CMS web** (`/admin/`) — interface en ligne, éditable depuis n'importe où (voir plus bas).
 - 💻 **Outil local** (`tools/manage.py`) — pour les imports/traitements d'images en masse.
 
+> **Ce dépôt contient deux parties.** Ce README couvre le **site**. Toute la
+> **publication Instagram** (automatisation + outils) est regroupée dans
+> **[`_social/`](_social/)** — voir [`_social/README.md`](_social/README.md).
+
 ---
 
 ## 1. Structure

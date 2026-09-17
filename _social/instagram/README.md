@@ -2,7 +2,7 @@
 
 Publie **un post par semaine** sur `@blindsp0t_studio` depuis ce dossier, via
 GitHub Actions, sans navigateur. Chemin API : « Instagram API with Instagram Login »
-(aucune Page Facebook requise). Plan complet : `claudeDOC/INSTAGRAM-AUTOPOST.md`.
+(aucune Page Facebook requise). Plan complet : `claudeDOC/instaBot/INSTAGRAM-AUTOPOST.md`.
 
 ## Ajouter un post (aucun code)
 1. Copier le dossier `_modele/` dans `queue/` et le renommer, ex.
