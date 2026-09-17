@@ -1,8 +1,0 @@
-# Candidats scannés depuis : /Users/blindsp0t/BLINDSP0T/projets/bigData
-# Pour publier : remonte le fichier voulu dans le dossier parent,
-# renommé 0N.jpg, puis supprime candidates/.
-
-cand-01.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/bigData/medias/nouveauxMedias_aIntegrer/fond d'écran mekki.png  (2880x1756)
-cand-02.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/bigData/lanceursBigData/000_BIG_DATA.png  (3840x2400)
-cand-03.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/bigData/IMG_20161101_120035.jpg  (3286x2432)
-cand-04.jpg  <-  /Users/blindsp0t/BLINDSP0T/projets/bigData/medias/nouveauxMedias_aIntegrer/17_calque_efface_bigData.png  (2826x1476)

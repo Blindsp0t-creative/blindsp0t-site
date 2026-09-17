@@ -1,0 +1,14 @@
+# BROUILLON Reel généré le 2026-09-17 par reel_prep.py — À VALIDER.
+# Source : https://vimeo.com/1221116062/0f721e1c5e [portion 29–80s] [crop 2216:1500:384:216]  (durée ré-encodée ≤ 51 s)
+# 1) choisis ta vignette parmi covers/cover-1..5.jpg et mets son nom dans reel_cover
+#    (supprime les autres covers/ si tu veux) ; 2) ajuste la légende ;
+# 3) DÉPLACE ce dossier dans ../queue/ puis pousse (git add -A && git push).
+# Vidéo hébergée sur GitHub Release (hors dépôt) — voir video_url.
+
+type: reel
+reel_cover: covers/cover-4.jpg
+video_url: "https://github.com/Blindsp0t-creative/blindsp0t-site/releases/download/reels/2026-09-17-depthExpermients.mp4"
+caption: |
+  Depth estimation expermients in Unity
+
+  #blindsp0t #artnumerique #newmediaart #creativecoding #installationart #lyon #digitalart #mediaart #generativeart #immersiveart
