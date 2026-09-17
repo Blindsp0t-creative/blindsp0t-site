@@ -16,27 +16,44 @@ GitHub Actions, sans navigateur. Chemin API : « Instagram API with Instagram Lo
    le lundi, le cron publie le **plus ancien** post éligible et le déplace dans
    `published/`.
 
-## Publier un Reel (vidéo) — ⚠️ non encore testé de bout en bout
-Le code gère les Reels, mais aucun Reel n'a encore été publié en conditions réelles
-(seuls images/carrousels sont validés). Marche à suivre :
+## Publier un Reel (vidéo) — ⚠️ chemin non encore testé de bout en bout
+Le code gère les Reels, mais aucun Reel n'a encore été publié en conditions réelles.
 
-1. Créer un dossier dans `queue/`, ex. `queue/2026-09-20-installation-led/`.
-2. Y déposer **une seule vidéo** nommée `01.mp4` (ou `.mov`). Une seule vidéo par post :
-   la détection `type: auto` en fait un **reel** (pas de carrousel vidéo ici).
-   - Specs Instagram : **MP4, H.264 + AAC**, ratio **9:16** conseillé (jusqu'à 1080×1920),
-     durée **3 s–90 s**, et **≤ ~50 Mo** (voir la limite d'hébergement ci-dessous).
-3. `post.yml` : `type: auto` (ou `type: reel`) + `caption`. Vignette optionnelle :
-   `reel_cover: cover.jpg` (déposer aussi cette image dans le dossier).
-4. Committer / pousser, puis publier comme un post normal (cron du lundi ou
-   `workflow_dispatch`). La publication attend la **fin de l'encodage** côté Instagram
-   (jusqu'à ~5 min) — c'est normal.
+### Le plus simple : `reel_prep.py` (À LANCER EN LOCAL)
+Cet outil **ré-encode** la vidéo aux specs Reel, génère **5 vignettes candidates**, crée
+le **brouillon** de post, et **héberge la vidéo sur une GitHub Release** (hors dépôt →
+n'alourdit pas le dépôt). Entrée : un **fichier local** ou une **URL Vimeo**.
 
-**⚠️ Limite d'hébergement vidéo.** Les médias sont servis par **URL brute GitHub**. Or
-GitHub **bloque les fichiers > 100 Mo** (alerte dès 50 Mo) et une vidéo committée
-**alourdit définitivement le dépôt public**. Pour des Reels réguliers ou lourds, préférer
-un **autre hébergement** (ex. lien Vimeo/CDN via `IG_RAW_BASE`) plutôt que git-raw.
-Si la vidéo ne respecte pas les specs, le run échoue proprement (conteneur en `ERROR`),
-sans rien publier.
+```bash
+# fichier local (héberge la vidéo sur une Release GitHub — défaut)
+tools/.venv/bin/python tools/reel_prep.py ~/videos/installation.mov --slug installation-led
+# depuis Vimeo
+tools/.venv/bin/python tools/reel_prep.py https://vimeo.com/123456789 --slug ma-piece
+# variantes : --host queue (committe la vidéo au lieu de la Release) ; --fit cover
+#             (remplir+recadrer au lieu du letterbox 9:16) ; --max-seconds 60
+```
+Puis, dans le brouillon `drafts/<date>-<slug>/` créé :
+1. **choisis ta vignette** parmi `covers/cover-1..5.jpg` et mets son nom dans `reel_cover`
+   (ex. `reel_cover: covers/cover-3.jpg`), supprime les autres si tu veux ;
+2. **ajuste la légende** dans `post.yml` ;
+3. **déplace** le dossier dans `../queue/` et pousse (`git add -A && git push`).
+
+Dépendances (local) : **ffmpeg** (obligatoire), **yt-dlp** (pour Vimeo), **gh** authentifié
+(pour `--host release`).
+
+### À la main (sans l'outil)
+Créer `queue/<date>-slug/` avec **une seule vidéo** `01.mp4` (`type: auto` → reel), une
+`caption`, et une vignette `reel_cover:`. Specs : **MP4 H.264 + AAC, 9:16, 3–90 s**.
+
+### Points communs / limites
+- La publication attend la **fin de l'encodage** côté Instagram (jusqu'à ~5 min) — normal.
+- Si la vidéo ne respecte pas les specs, le run échoue proprement (conteneur `ERROR`),
+  sans rien publier.
+- **Hébergement** : `--host release` garde la vidéo **hors du dépôt** (recommandé). En
+  `--host queue` (ou dépôt manuel), la vidéo est servie par **URL brute GitHub** → GitHub
+  **bloque > 100 Mo** et alourdit le dépôt public.
+- ⚠️ Reste à **valider au 1er vrai Reel** que le fetch de l'URL (Release ou raw) par
+  Instagram fonctionne.
 
 ## Vérifier avant de publier
 ```bash

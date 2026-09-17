@@ -98,6 +98,8 @@ def detect_type(post, medias):
     t = (post.get("type") or "auto").lower()
     if t != "auto":
         return t
+    if post.get("video_url"):            # vidéo hébergée hors dépôt (Release/CDN)
+        return "reel"
     has_video = any(p.suffix.lower() in VIDEO_EXT for p in medias)
     if has_video:
         return "reel"
@@ -237,7 +239,8 @@ def permalink(media_id):
 def validate(d, post, medias, kind):
     errs, warns = [], []
     caption = post.get("caption") or ""
-    if not medias:
+    video_url = post.get("video_url")
+    if not medias and not video_url:
         errs.append("aucun média (jpg/jpeg/mp4/mov) dans le dossier")
     if len(caption) > MAX_CAPTION:
         errs.append(f"légende trop longue ({len(caption)} > {MAX_CAPTION})")
@@ -256,8 +259,14 @@ def validate(d, post, medias, kind):
         errs.append(f"carrousel : {len(medias)} médias (attendu 2 à 10)")
     if kind == "reel":
         vids = [p for p in medias if p.suffix.lower() in VIDEO_EXT]
-        if len(vids) != 1:
-            errs.append(f"reel : {len(vids)} vidéo(s) (attendu exactement 1)")
+        if video_url:
+            if vids:
+                warns.append("reel : video_url ET vidéo locale — la video_url est utilisée")
+        elif len(vids) != 1:
+            errs.append(f"reel : {len(vids)} vidéo(s) locale(s) (attendu 1, ou un video_url)")
+        rc = post.get("reel_cover")
+        if rc and not str(rc).startswith("http") and not (d / rc).is_file():
+            errs.append(f"reel_cover introuvable : {rc}")
     if kind == "image" and len(medias) != 1:
         errs.append(f"image : {len(medias)} médias (attendu 1)")
     return errs, warns
@@ -386,13 +395,20 @@ def publish_one(d, do_commit=True):
         sys.exit(1)
 
     print(f"→ publication de {d.name}  [{kind}]")
-    cover_url = raw_url(d / post["reel_cover"]) if post.get("reel_cover") else None
+    rc = post.get("reel_cover")
+    cover_url = None
+    if rc:
+        cover_url = rc if str(rc).startswith("http") else raw_url(d / rc)
 
     if kind == "image":
         cid = create_image_container(raw_url(medias[0]), caption=caption)
     elif kind == "reel":
-        vid = next(p for p in medias if p.suffix.lower() in VIDEO_EXT)
-        cid = create_video_container(raw_url(vid), caption=caption,
+        # vidéo : URL externe (Release/CDN) si fournie, sinon fichier local du dossier
+        if post.get("video_url"):
+            video_url = post["video_url"]
+        else:
+            video_url = raw_url(next(p for p in medias if p.suffix.lower() in VIDEO_EXT))
+        cid = create_video_container(video_url, caption=caption,
                                      as_reel=True, cover_url=cover_url)
     elif kind == "carousel":
         children = []
