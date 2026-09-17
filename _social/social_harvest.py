@@ -5,7 +5,7 @@ Génère des BROUILLONS de posts à partir des projets du site (content/projects
 images de assets/images/<slug>/), et peut aller chercher des images SUPPLÉMENTAIRES
 dans les dossiers de travail locaux (mapping validé dans sources.yml).
 
-Chaque brouillon = un dossier dans content/social/instagram/drafts/<date>-<slug>/ :
+Chaque brouillon = un dossier dans _social/instagram/drafts/<date>-<slug>/ :
   - post.yml       : type/caption (titre + description + hashtags) — à relire
   - 01.jpg…        : images du SITE reformatées pour Instagram (le carrousel proposé)
   - candidates/    : images en plus, tirées du dossier de travail local (À TRIER —
@@ -14,13 +14,13 @@ Chaque brouillon = un dossier dans content/social/instagram/drafts/<date>-<slug>
 ⚠️ L'outil PROPOSE, tu VALIDES. Rien n'est publié ici. Pour publier un brouillon :
    1) relis/ajuste la légende, 2) remonte les images voulues de candidates/ à la racine
    (renommées 0N.jpg) et supprime le reste, 3) DÉPLACE le dossier dans ../queue/
-   (c'est queue/ que lit tools/ig_publish.py).
+   (c'est queue/ que lit _social/ig_publish.py).
 
 Usage :
-  python tools/social_harvest.py list                    projets + nb images + état
-  python tools/social_harvest.py map [--force]           (re)génère sources.yml (À VALIDER)
-  python tools/social_harvest.py draft <slug|--next|--all> [--scan] [--max-images N] [--force]
-  python tools/social_harvest.py scan <slug|--all> [--force]   remplit candidates/ (dossier local)
+  python _social/social_harvest.py list                    projets + nb images + état
+  python _social/social_harvest.py map [--force]           (re)génère sources.yml (À VALIDER)
+  python _social/social_harvest.py draft <slug|--next|--all> [--scan] [--max-images N] [--force]
+  python _social/social_harvest.py scan <slug|--all> [--force]   remplit candidates/ (dossier local)
 
 Deps : stdlib + Pillow + PyYAML (déjà dans tools/requirements.txt). Outil LOCAL only
 (non exécuté en CI) : lit motsCles.txt et /Users/.../BLINDSP0T/projets hors du dépôt.
@@ -53,7 +53,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)                      # blindsp0t-site/
 PROJECTS_DIR = os.path.join(ROOT, "content", "projects")
 IMAGES_DIR = os.path.join(ROOT, "assets", "images")
-SOCIAL = os.path.join(ROOT, "content", "social", "instagram")
+SOCIAL = os.path.join(ROOT, "_social", "instagram")
 DRAFTS = os.path.join(SOCIAL, "drafts")
 QUEUE = os.path.join(SOCIAL, "queue")
 PUBLISHED = os.path.join(SOCIAL, "published")

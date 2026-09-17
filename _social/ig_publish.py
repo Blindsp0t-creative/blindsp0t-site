@@ -2,7 +2,7 @@
 """
 Publication automatique Instagram — chemin « Instagram API with Instagram Login ».
 
-Publie UN post (le plus ancien éligible) depuis content/social/instagram/queue/.
+Publie UN post (le plus ancien éligible) depuis _social/instagram/queue/.
 Gère image simple, carrousel (2–10 médias) et Reel. Sans navigateur.
 Les médias sont servis en URL brute GitHub (dépôt public), l'API Instagram les
 télécharge depuis cette URL — donc les fichiers doivent être poussés sur `main`
@@ -15,11 +15,11 @@ Variables d'environnement (secrets GitHub Actions) :
   IG_API_VERSION    (option) version d'API Graph ; défaut = v23.0
 
 Commandes :
-  python tools/ig_publish.py --dry-run [--check-urls]   valide sans publier
-  python tools/ig_publish.py --list                     liste la file d'attente
-  python tools/ig_publish.py                            publie le plus ancien éligible
-  python tools/ig_publish.py --post <slug>              publie ce post précis
-  python tools/ig_publish.py --no-commit                ne pas committer/pousser après
+  python _social/ig_publish.py --dry-run [--check-urls]   valide sans publier
+  python _social/ig_publish.py --list                     liste la file d'attente
+  python _social/ig_publish.py                            publie le plus ancien éligible
+  python _social/ig_publish.py --post <slug>              publie ce post précis
+  python _social/ig_publish.py --no-commit                ne pas committer/pousser après
 
 Structure d'un post (un dossier par post dans queue/) :
   queue/2026-09-15-nom-court/
@@ -47,7 +47,7 @@ except ImportError:
     sys.exit(1)
 
 ROOT = Path(__file__).resolve().parent.parent
-SOCIAL = ROOT / "content" / "social" / "instagram"
+SOCIAL = ROOT / "_social" / "instagram"
 QUEUE = SOCIAL / "queue"
 PUBLISHED = SOCIAL / "published"
 LOG = SOCIAL / "log.json"

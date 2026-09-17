@@ -26,9 +26,9 @@ n'alourdit pas le dépôt). Entrée : un **fichier local** ou une **URL Vimeo**.
 
 ```bash
 # fichier local (héberge la vidéo sur une Release GitHub — défaut)
-tools/.venv/bin/python tools/reel_prep.py ~/videos/installation.mov --slug installation-led
+tools/.venv/bin/python _social/reel_prep.py ~/videos/installation.mov --slug installation-led
 # depuis Vimeo
-tools/.venv/bin/python tools/reel_prep.py https://vimeo.com/123456789 --slug ma-piece
+tools/.venv/bin/python _social/reel_prep.py https://vimeo.com/123456789 --slug ma-piece
 # variantes : --host queue (committe la vidéo au lieu de la Release) ; --fit cover
 #             (remplir+recadrer au lieu du letterbox 9:16) ; --max-seconds 60
 ```
@@ -57,8 +57,8 @@ Créer `queue/<date>-slug/` avec **une seule vidéo** `01.mp4` (`type: auto` →
 
 ## Vérifier avant de publier
 ```bash
-tools/.venv/bin/python tools/ig_publish.py --list                 # voir la file
-tools/.venv/bin/python tools/ig_publish.py --dry-run --check-urls # valider médias + URLs
+tools/.venv/bin/python _social/ig_publish.py --list                 # voir la file
+tools/.venv/bin/python _social/ig_publish.py --dry-run --check-urls # valider médias + URLs
 ```
 
 ## Comment ça marche

@@ -5,7 +5,7 @@ reel_prep.py — prépare une vidéo pour publication en Reel Instagram (À LANC
 - Entrée : un fichier vidéo LOCAL (.mp4/.mov/…) OU une URL Vimeo (téléchargée via yt-dlp).
 - Ré-encode aux specs Reel : H.264 + AAC, 1080x1920 (9:16), ≤ ~90 s, +faststart.
 - Génère 5 vignettes candidates (covers/cover-1..5.jpg) — tu choisiras la préférée.
-- Crée un brouillon de post dans content/social/instagram/drafts/<date>-<slug>/
+- Crée un brouillon de post dans _social/instagram/drafts/<date>-<slug>/
   (l'outil propose, tu valides : édite la légende + choisis la vignette, puis déplace
   le dossier dans ../queue/ et pousse).
 
@@ -20,8 +20,8 @@ yt-dlp : binaire imposé (_YTDLP_DEFAULT), surchargeable via la variable d'env Y
 sinon repli sur celui du PATH.
 
 Exemples :
-  tools/.venv/bin/python tools/reel_prep.py ~/videos/installation.mov --slug installation-led
-  tools/.venv/bin/python tools/reel_prep.py https://vimeo.com/123456789 --host queue
+  tools/.venv/bin/python _social/reel_prep.py ~/videos/installation.mov --slug installation-led
+  tools/.venv/bin/python _social/reel_prep.py https://vimeo.com/123456789 --host queue
 """
 import argparse
 import datetime as dt
@@ -35,7 +35,7 @@ import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DRAFTS = ROOT / "content" / "social" / "instagram" / "drafts"
+DRAFTS = ROOT / "_social" / "instagram" / "drafts"
 
 FFMPEG = shutil.which("ffmpeg") or "ffmpeg"
 GH = shutil.which("gh")
@@ -283,7 +283,7 @@ def main():
     print("   1) choisis la vignette (covers/) et mets-la dans reel_cover")
     print("   2) ajuste la légende dans post.yml")
     print("   3) déplace le dossier dans ../queue/ puis pousse")
-    print("   Vérifier :  tools/.venv/bin/python tools/ig_publish.py --dry-run")
+    print("   Vérifier :  tools/.venv/bin/python _social/ig_publish.py --dry-run")
 
 
 if __name__ == "__main__":
