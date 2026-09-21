@@ -142,12 +142,26 @@ def _token():
     return tok
 
 
+def _redact(msg):
+    """Masque le token dans un message d'erreur (les exceptions requests recrachent
+    l'URL complète avec ?access_token=…, sinon le secret fuiterait dans les traces)."""
+    tok = os.environ.get("IG_ACCESS_TOKEN", "").strip()
+    s = str(msg)
+    if tok:
+        s = s.replace(tok, "***")
+    return s
+
+
 def api_post(node, params):
     url = f"{GRAPH}/{API_VERSION}/{node}"
     params = {**params, "access_token": _token()}
-    r = requests.post(url, data=params, timeout=120)
+    try:
+        r = requests.post(url, data=params, timeout=120)
+    except requests.RequestException as e:
+        print(f"! erreur réseau sur POST {node} : {_redact(e)}")
+        sys.exit(4)
     if not r.ok:
-        print(f"! API {r.status_code} sur POST {node} : {r.text[:500]}")
+        print(f"! API {r.status_code} sur POST {node} : {_redact(r.text)[:500]}")
         sys.exit(3)
     return r.json()
 
@@ -155,9 +169,13 @@ def api_post(node, params):
 def api_get(node, params):
     url = f"{GRAPH}/{API_VERSION}/{node}"
     params = {**params, "access_token": _token()}
-    r = requests.get(url, params=params, timeout=60)
+    try:
+        r = requests.get(url, params=params, timeout=60)
+    except requests.RequestException as e:
+        print(f"! erreur réseau sur GET {node} : {_redact(e)}")
+        sys.exit(4)
     if not r.ok:
-        print(f"! API {r.status_code} sur GET {node} : {r.text[:500]}")
+        print(f"! API {r.status_code} sur GET {node} : {_redact(r.text)[:500]}")
         sys.exit(3)
     return r.json()
 
