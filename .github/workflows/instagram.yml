@@ -5,7 +5,7 @@ name: Instagram (publication hebdomadaire)
 
 on:
   schedule:
-    - cron: "0 8 * * 1"        # tous les lundis 08:00 UTC (~10h Paris été / 9h hiver)
+    - cron: "23 7 * * 1"        # tous les lundis 08:00 UTC (~10h Paris été / 9h hiver)
   workflow_dispatch:            # bouton « Run workflow » pour tester manuellement
 
 permissions:
