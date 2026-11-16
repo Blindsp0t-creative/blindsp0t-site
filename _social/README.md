@@ -29,8 +29,8 @@ _social/
   Instagram les télécharge de là. Les vidéos lourdes vont plutôt sur une **GitHub Release**
   (via `reel_prep.py --host release`) pour ne pas alourdir le dépôt.
 - Secrets (dans Settings → Secrets → Actions du dépôt) : `IG_ACCESS_TOKEN` (token longue
-  durée ~60 j, à rafraîchir avant ~mi-novembre 2026), `IG_USER_ID` (posé mais inutilisé —
-  le script publie sur le nœud `me`).
+  durée ~60 j, **à régénérer quand il expire — voir [`TOKEN.md`](TOKEN.md)**), `IG_USER_ID`
+  (posé mais inutilisé — le script publie sur le nœud `me`).
 
 ## Usage (le venv est partagé avec le site : `tools/.venv`)
 ```bash
